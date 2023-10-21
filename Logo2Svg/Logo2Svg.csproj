@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <UsingTask TaskName="BuildAntlr.BuildAntlr" AssemblyFile="../BuildAntlr/bin/Debug/netstandard2.0/BuildAntlr.dll"/>
+  
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <RootFolder>$(MSBuildProjectDirectory)</RootFolder>    
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
+  </ItemGroup>
+
+  <Target Name="BuildAntlr" BeforeTargets="CoreCompile" Inputs="$(RootFolder)/Logo.g4" Outputs="$(RootFolder)/LogoParser.cs $(RootFolder)/LogoLexer.cs $(RootFolder)/LogoBaseVisitor.cs $(RootFolder)/LogoVisitor.cs">
+     <BuildAntlr
+        JavaPath="/usr/bin/java"
+        AntlrJar="/opt/local/lib/antlr-4.13.1-complete.jar"
+        Listeners="false"
+        Visitors="true"
+        Files="$(RootFolder)/Logo.g4">
+     </BuildAntlr>
+     <ItemGroup>
+        <Compile Include="$(RootFolder)/LogoParser.cs" />
+        <Compile Include="$(RootFolder)/LogoLexer.cs" />
+        <Compile Include="$(RootFolder)/LogoVisitor.cs" />
+        <Compile Include="$(RootFolder)/LogoBaseVisitor.cs" />
+     </ItemGroup>
+  </Target>
+
+
+  <Target Name="ForceReGenerateOnRebuild" AfterTargets="CoreClean"> 
+     <Delete Files="$(RootFolder)/LogoParser.cs" />
+     <Delete Files="$(RootFolder)/LogoLexer.cs" /> 
+     <Delete Files="$(RootFolder)/LogoBaseVisitor.cs" />
+     <Delete Files="$(RootFolder)/LogoVisitor.cs" />        
+  </Target>
+  
+</Project>
+

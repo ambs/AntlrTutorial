@@ -1,0 +1,11 @@
+*/obj
+*/bin
+Logo2Svg/LogoBaseVisitor.cs
+Logo2Svg/Logo.interp
+Logo2Svg/LogoLexer.cs
+Logo2Svg/LogoLexer.interp
+Logo2Svg/LogoLexer.tokens
+Logo2Svg/LogoParser.cs
+Logo2Svg/Logo.tokens
+Logo2Svg/LogoVisitor.cs
+*~

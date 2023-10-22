@@ -12,7 +12,7 @@ command : Right White+ Value
 // Lexer
 
 Right   : 'RIGHT' | 'RT' ;
-Forward : 'FORWARD' | 'FW' ;
+Forward : 'FORWARD' | 'FD' ;
 
 Value   : [0-9]+ ;           
             

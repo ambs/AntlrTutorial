@@ -32,7 +32,7 @@
   </Target>
 
 
-  <Target Name="ForceReGenerateOnRebuild" BeforeTargets="PrepareForBuild"> 
+  <Target Name="ForceReGenerateOnRebuild" BeforeTargets="Build"> 
      <Delete Files="$(RootFolder)/LogoParser.cs" />
      <Delete Files="$(RootFolder)/LogoLexer.cs" /> 
      <Delete Files="$(RootFolder)/LogoBaseVisitor.cs" />

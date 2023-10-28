@@ -1,43 +1,44 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <UsingTask TaskName="BuildAntlr.BuildAntlr" AssemblyFile="../BuildAntlr/bin/Debug/netstandard2.0/BuildAntlr.dll"/>
-  
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
 
-    <RootFolder>$(MSBuildProjectDirectory)</RootFolder>    
+    <RootFolder>$(MSBuildProjectDirectory)</RootFolder>
+    <GrammarPath>$(RootFolder)/Language</GrammarPath>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
   </ItemGroup>
 
-  <Target Name="BuildAntlr" BeforeTargets="CoreCompile" Inputs="$(RootFolder)/Logo.g4" Outputs="$(RootFolder)/LogoParser.cs $(RootFolder)/LogoLexer.cs $(RootFolder)/LogoBaseVisitor.cs $(RootFolder)/LogoVisitor.cs">
+  <Target Name="BuildAntlr" BeforeTargets="CoreCompile" Inputs="$(GrammarPath)/Logo.g4" Outputs="$(GrammarPath)/LogoParser.cs $(GrammarPath)/LogoLexer.cs $(GrammarPath)/LogoBaseVisitor.cs $(GrammarPath)/LogoVisitor.cs">
      <BuildAntlr
         JavaPath="/usr/bin/java"
         AntlrJar="/opt/local/lib/antlr-4.13.1-complete.jar"
         Listeners="false"
+        Namespace="Logo2Svg.Language"
         Visitors="true"
-        Files="$(RootFolder)/Logo.g4">
+        OutputDir="$(GrammarPath)"
+        Files="$(GrammarPath)/Logo.g4">
      </BuildAntlr>
      <ItemGroup>
-        <Compile Include="$(RootFolder)/LogoParser.cs" />
-        <Compile Include="$(RootFolder)/LogoLexer.cs" />
-        <Compile Include="$(RootFolder)/LogoVisitor.cs" />
-        <Compile Include="$(RootFolder)/LogoBaseVisitor.cs" />
+        <Compile Include="$(GrammarPath)/LogoParser.cs" />
+        <Compile Include="$(GrammarPath)/LogoLexer.cs" />
+        <Compile Include="$(GrammarPath)/LogoVisitor.cs" />
+        <Compile Include="$(GrammarPath)/LogoBaseVisitor.cs" />
      </ItemGroup>
   </Target>
 
-
-  <Target Name="ForceReGenerateOnRebuild" BeforeTargets="Build"> 
-     <Delete Files="$(RootFolder)/LogoParser.cs" />
-     <Delete Files="$(RootFolder)/LogoLexer.cs" /> 
-     <Delete Files="$(RootFolder)/LogoBaseVisitor.cs" />
-     <Delete Files="$(RootFolder)/LogoVisitor.cs" />        
+  <Target Name="CleanGeneratedFiles" BeforeTargets="Build">
+        <Delete Files="$(GrammarPath)/LogoParser.cs" />
+        <Delete Files="$(GrammarPath)/LogoLexer.cs" />
+        <Delete Files="$(GrammarPath)/LogoVisitor.cs" />
+        <Delete Files="$(GrammarPath)/LogoBaseVisitor.cs" />
   </Target>
-  
-</Project>
 
+</Project>

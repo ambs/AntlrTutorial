@@ -7,6 +7,10 @@ namespace BuildAntlr
 {
     public class BuildAntlr : Task
     {
+        public string Namespace { get; set; }
+
+        public string OutputDir { get; set; }
+
         [Required]
         public string JavaPath { get; set; }
 
@@ -34,12 +38,15 @@ namespace BuildAntlr
             var visitor = Visitors ? "-visitor" : "-no-visitor";
             var listener = Listeners ? "-listener" : "-no-listener";
 
-            var proc = new Process 
+            var output = string.IsNullOrEmpty(OutputDir) ? "" : $"-o {OutputDir}";
+            var @namespace = string.IsNullOrEmpty(Namespace) ? "" : $"-package {Namespace}";
+
+            var proc = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = JavaPath,
-                    Arguments = $"-Xmx500M -cp {cp} org.antlr.v4.Tool {visitor} {listener} -Dlanguage=CSharp {files}",
+                    Arguments = $"-Xmx500M -cp {cp} org.antlr.v4.Tool {visitor} {listener} {output} {@namespace} -Dlanguage=CSharp {files}",
                     UseShellExecute = false,
                     RedirectStandardOutput = false,
                     CreateNoWindow = true

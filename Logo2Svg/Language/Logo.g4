@@ -2,11 +2,11 @@ grammar Logo;
 
 // Parser
 
-program : White* command ( White+ command)* White* EOF
+program : command+ EOF
         ;
 
-command : Right White+ Value
-        | Forward White+ Value
+command : Right Value
+        | Forward Value
         ;
 
 // Lexer
@@ -16,4 +16,5 @@ Forward : 'FORWARD' | 'FD' ;
 
 Value   : [0-9]+ ;           
             
-White   : [ \n\t\r] ;    
+White   : [ \n\t\r] -> skip;
+    

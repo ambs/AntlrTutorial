@@ -9,7 +9,18 @@ public class Turtle
     public Colour Colour = new(255, 0, 0);
 
     public const float ToRadians = MathF.PI / 180f; 
-    public float Rotation = ToRadians * 90f;
+    private float _rotation = ToRadians * 90f;
+    public float Rotation
+    {
+        get => _rotation;
+        set => _rotation = Norm(value);
+    }
+    
+    private static float Norm(float a) {
+        while(a > 2*MathF.PI) a -= MathF.PI;
+        while(a < 0f) a += MathF.PI;
+        return a;
+    }
 
     public void AddLine(Point from, Point to)
     {

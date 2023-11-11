@@ -25,8 +25,11 @@ static class App {
       
       var programContext = parser.program();
       var visitor = new TreeVisitor();
-      Program program = visitor.Visit(programContext) as Program;
-      Console.WriteLine(program);
+      Program program = visitor.Visit<Program>(programContext);
+
+      Turtle turtle = new Turtle();
+      program.Execute(turtle);
+      turtle.Save(output);
     }
     catch (Exception exception)
     {

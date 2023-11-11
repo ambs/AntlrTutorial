@@ -8,4 +8,5 @@ Logo2Svg/Language/LogoLexer.tokens
 Logo2Svg/Language/LogoParser.cs
 Logo2Svg/Language/Logo.tokens
 Logo2Svg/Language/LogoVisitor.cs
+Logo2Svg/.idea
 *~

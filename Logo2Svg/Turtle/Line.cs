@@ -1,6 +1,6 @@
 namespace Logo2Svg.SVG;
 
-public class Line
+public class Line : IDrawable
 {
     public Point Pt1, Pt2;
     public Colour Colour;

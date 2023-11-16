@@ -1,6 +1,6 @@
 namespace Logo2Svg.SVG;
 
-public class Canvas : List<Line>
+public class Canvas : List<IDrawable>
 {
     public override string ToString()
     {

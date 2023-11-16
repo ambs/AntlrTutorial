@@ -5,26 +5,36 @@ namespace Logo2Svg;
 public class Turtle
 {
     private Canvas _canvas = new();
-    public Point Position = new(100, 100);
+    public Point Position;
     public Colour Colour = new(255, 0, 0);
 
     public const float ToRadians = MathF.PI / 180f; 
-    private float _rotation = ToRadians * 90f;
+    private float _rotation;
     public float Rotation
     {
         get => _rotation;
         set => _rotation = Norm(value);
     }
+
+    public Turtle()
+    {
+        Reset();
+    }
     
     private static float Norm(float a) {
-        while(a > 2*MathF.PI) a -= MathF.PI;
-        while(a < 0f) a += MathF.PI;
+        while(a > 2*MathF.PI) a -= 2f*MathF.PI;
+        while(a < 0f) a += 2f*MathF.PI;
         return a;
     }
 
     public void AddLine(Point from, Point to)
     {
         _canvas.Add(new Line(from, to, Colour));
+    }
+    
+    public void AddArc(Point turtlePosition, float turtleAngle, float radius, float angle)
+    {
+        _canvas.Add(new Arc(turtlePosition, turtleAngle, radius, angle, Colour));
     }
 
     public bool Save(string filename)
@@ -42,4 +52,11 @@ public class Turtle
             return false;
         }
     }
+    
+    public void Reset()
+    {
+        Position = new Point(100, 100);
+        Rotation = MathF.PI / 2f;
+    }
+
 }

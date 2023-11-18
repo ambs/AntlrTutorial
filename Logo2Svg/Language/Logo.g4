@@ -9,22 +9,41 @@ command : simpleCommand
         | SetPos squarePoint
         | SetXY simplePoint
         | Home
-        | Arc value value
+        | Arc expr expr
         ;
 
-simpleCommand : cmd=(Right|Left|Forward|Back|SetX|SetY|SetH) value ;
+simpleCommand : cmd=(Right|Left|Forward|Back|SetX|SetY|SetH) expr ;
 
-simplePoint : value value
+simplePoint : expr expr
             ;
 
-squarePoint : '[' value value ']'
+squarePoint : '[' expr expr ']'
             ;
+
+expr : cmd=(Sum|Difference|Product|Quotient|Power) expr expr  #prefixBinaryOp 
+     | op=(Minus|'-') expr                                    #unaryMinus
+     | '(' Sum expr+ ')'                                      #summation
+     | '(' Product expr+ ')'                                  #product
+     | '(' Quotient expr ')'                                  #quotient
+     | <assoc=right> expr op='^' expr                         #binaryOp
+     | <assoc=left> expr op=('*'|'/') expr                    #binaryOp
+     | <assoc=left> expr op=('+'|'-') expr                    #binaryOp
+     | value                                                  #scalar
+     | '(' expr ')'                                           #scalar
+     ;
 
 value : IntegerValue
       | RealValue
       ;
 
 // Lexer
+
+Minus      : M I N U S ;
+Power      : P O W E R ;
+Quotient   : Q U O T I E N T ;
+Product    : P R O D U C T ;
+Difference : D I F F E R E N C E ;
+Sum        : S U M ;
 
 Right   : R I G H T | R T ;
 Forward : F O R W A R D | F D ;

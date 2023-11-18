@@ -2,20 +2,18 @@ using Logo2Svg.SVG;
 
 namespace Logo2Svg.AST;
 
-public class PointParam : IParameter
+public class PointParam : Parameter
 {
-    public ValueParam X { get; }
-    public ValueParam Y { get; }
+    private readonly Parameter _x, _y;
 
-    public Point Point => new Point(X.Value, Y.Value);
+    public Point Point(Turtle t) => new Point(_x.Value(t), _y.Value(t));
     
-    public PointParam(ValueParam x, ValueParam y)
+    public PointParam(Parameter x, Parameter y)
     {
-        X = x;
-        Y = y;
+        _x = x;
+        _y = y;
     }
-
-
-    public void Execute(Turtle turtle) => throw new NotImplementedException();
-    public override string ToString() => $"({X},{Y})";
+    
+    public override float Value(Turtle turtle) => throw new NotImplementedException();
+    public override string ToString() => $"({_x},{_y})";
 }

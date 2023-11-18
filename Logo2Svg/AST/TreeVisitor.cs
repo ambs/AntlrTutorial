@@ -7,39 +7,65 @@ namespace Logo2Svg.AST
 {
     public class TreeVisitor : LogoBaseVisitor<INode>
     {
+        public override INode VisitScalar([NotNull] LogoParser.ScalarContext context)
+        {
+            return context.value() is { } ctx ? Visit<Parameter>(ctx) : Visit<Parameter>(context.expr());
+        }
+
         public override INode VisitValue([NotNull] LogoParser.ValueContext context)
         {
             var valueStr = (context.IntegerValue() ?? context.RealValue()).Symbol.Text;
             return new ValueParam(float.Parse(valueStr));
         }
 
-        public override INode VisitSquarePoint(LogoParser.SquarePointContext context)
+        public override INode VisitSquarePoint([NotNull] LogoParser.SquarePointContext context)
         {
-            var xVal = Visit<ValueParam>(context.value(0));
-            var yVal = Visit<ValueParam>(context.value(1));
+            var xVal = Visit<Parameter>(context.expr(0));
+            var yVal = Visit<Parameter>(context.expr(1));
             return new PointParam(xVal, yVal);
         }
 
         public override INode VisitSimplePoint([NotNull] LogoParser.SimplePointContext context)
         {
-            var xVal = Visit<ValueParam>(context.value(0));
-            var yVal = Visit<ValueParam>(context.value(1));
+            var xVal = Visit<Parameter>(context.expr(0));
+            var yVal = Visit<Parameter>(context.expr(1));
             return new PointParam(xVal, yVal);
         }
 
         public override INode VisitSimpleCommand([NotNull] LogoParser.SimpleCommandContext context)
         {
-            var @param = Visit<ValueParam>(context.value());
+            var param = Visit<Parameter>(context.expr());
             var command = context.cmd.Type;
             var name = context.cmd.Text;
-            return new Command(command, name, @param);
+            return new Command(command, name, param);
         }
 
-        
-        public override INode VisitCommand(LogoParser.CommandContext context)
+        public override INode VisitBinaryOp([NotNull] LogoParser.BinaryOpContext context)
+        {
+            var parcels = context.expr().Select(Visit<Parameter>);
+            int op = context.op.Text switch
+            {
+                "^" => LogoLexer.Power,
+                "+" => LogoLexer.Sum,
+                "-" => LogoLexer.Difference,
+                "*" => LogoLexer.Product,
+                "/" => LogoLexer.Quotient,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            return new ExprParam(op, parcels.ToArray());
+        }
+
+        public override INode VisitUnaryMinus([NotNull] LogoParser.UnaryMinusContext context)
+        {
+            var sub = Visit<Parameter>(context.expr());
+            var zero = new ValueParam(0f);
+            return new ExprParam(LogoLexer.Difference, zero, sub);
+        }
+
+        public override INode VisitCommand([NotNull] LogoParser.CommandContext context)
         {
             IToken command = null;
-            List<IParameter> parameters = new();
+            List<Parameter> parameters = new();
 
             if (context.simpleCommand() is { } splCmd)
             {
@@ -54,24 +80,23 @@ namespace Logo2Svg.AST
             if (context.SetXY() is { } setXyCtx)
             {
                 command = setXyCtx.Symbol;
-                parameters.Add(Visit<IParameter>(context.simplePoint()));
+                parameters.Add(Visit<Parameter>(context.simplePoint()));
             }
 
             if (context.SetPos() is { } setPosCtx)
             {
                 command = setPosCtx.Symbol;
-                parameters.Add(Visit<IParameter>(context.squarePoint()));
+                parameters.Add(Visit<Parameter>(context.squarePoint()));
             }
 
             if (context.Arc() is { } argCtx)
             {
                 command = argCtx.Symbol;
-                parameters.AddRange(context.value().Select(Visit<IParameter>));
+                parameters.AddRange(context.expr().Select(Visit<Parameter>));
             }
 
             return command is not null ? new Command(command.Type, command.Text, parameters.ToArray()) : null;
         }
-
 
         public override INode VisitProgram([NotNull] LogoParser.ProgramContext context)
         {
@@ -79,7 +104,30 @@ namespace Logo2Svg.AST
             program.AddRange(context.command().Select(cmd => Visit<Command>(cmd)).ToList());
             return program;
         }
-        
+
+        public override INode VisitSummation([NotNull] LogoParser.SummationContext context)
+        {
+            var parcels = context.expr().Select(Visit<Parameter>);
+            return new ExprParam(context.Sum().Symbol.Type, parcels.ToArray());
+        }
+
+        public override INode VisitProduct([NotNull] LogoParser.ProductContext context)
+        {
+            var parcels = context.expr().Select(Visit<Parameter>);
+            return new ExprParam(context.Product().Symbol.Type, parcels.ToArray());
+        }
+
+        public override INode VisitQuotient([NotNull] LogoParser.QuotientContext context)
+        {
+            return new ExprParam(context.Quotient().Symbol.Type, Visit<Parameter>(context.expr()));
+        }
+
+        public override INode VisitPrefixBinaryOp([NotNull] LogoParser.PrefixBinaryOpContext context)
+        {
+            var parcels = context.expr().Select(Visit<Parameter>);
+            return new ExprParam(context.cmd.Type, parcels.ToArray());
+        }
+
         public T Visit<T>(IParseTree tree) => (T)Visit(tree);
     }
 }

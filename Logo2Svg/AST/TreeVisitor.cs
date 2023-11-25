@@ -43,13 +43,14 @@ namespace Logo2Svg.AST
         public override INode VisitBinaryOp([NotNull] LogoParser.BinaryOpContext context)
         {
             var parcels = context.expr().Select(Visit<Parameter>);
-            int op = context.op.Text switch
+            var op = context.op.Text switch
             {
                 "^" => LogoLexer.Power,
                 "+" => LogoLexer.Sum,
                 "-" => LogoLexer.Difference,
                 "*" => LogoLexer.Product,
                 "/" => LogoLexer.Quotient,
+                "%" => LogoLexer.Remainder,
                 _ => throw new ArgumentOutOfRangeException()
             };
             return new ExprParam(op, parcels.ToArray());
@@ -125,6 +126,12 @@ namespace Logo2Svg.AST
         {
             var parcels = context.expr().Select(Visit<Parameter>);
             return new ExprParam(context.cmd.Type, parcels.ToArray());
+        }
+
+        public override INode VisitArithFuncs(LogoParser.ArithFuncsContext context)
+        {
+            var parameters = context.expr().Select(Visit<Parameter>);
+            return new ExprParam(context.fun.Type, parameters.ToArray());
         }
 
         public T Visit<T>(IParseTree tree) => (T)Visit(tree);

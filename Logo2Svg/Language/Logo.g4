@@ -20,13 +20,17 @@ simplePoint : expr expr
 squarePoint : '[' expr expr ']'
             ;
 
-expr : cmd=(Sum|Difference|Product|Quotient|Power) expr expr  #prefixBinaryOp 
+expr : cmd=(Sum|Difference|Product|
+                  Quotient|Power|Remainder|Modulo) expr expr  #prefixBinaryOp 
      | op=(Minus|'-') expr                                    #unaryMinus
+     | fun=(Abs|Int|Round|Sqrt|Exp|Log10|Ln|Arctan|Sin|
+              Cos|Tan|Radarctan|Radsin|Radcos|Radtan) expr    #arithFuncs
+     | '(' fun=(Arctan|Radarctan) expr expr ')'               #arithFuncs
      | '(' Sum expr+ ')'                                      #summation
      | '(' Product expr+ ')'                                  #product
      | '(' Quotient expr ')'                                  #quotient
      | <assoc=right> expr op='^' expr                         #binaryOp
-     | <assoc=left> expr op=('*'|'/') expr                    #binaryOp
+     | <assoc=left> expr op=('*'|'/'|'%') expr                #binaryOp
      | <assoc=left> expr op=('+'|'-') expr                    #binaryOp
      | value                                                  #scalar
      | '(' expr ')'                                           #scalar
@@ -44,6 +48,23 @@ Quotient   : Q U O T I E N T ;
 Product    : P R O D U C T ;
 Difference : D I F F E R E N C E ;
 Sum        : S U M ;
+Remainder  : R E M A I N D E R ;
+Modulo     : M O D U L O ;
+Abs        : A B S ;
+Int        : I N T ;
+Round      : R O U N D ;
+Sqrt       : S Q R T ;
+Exp        : E X P ;
+Log10      : L O G '10' ;
+Ln         : L N ;
+Arctan     : A R C T A N ;
+Sin        : S I N ;
+Cos        : C O S ;
+Tan        : T A N ;
+Radarctan  : R A D A R C T A N ;
+Radsin     : R A D S I N ;
+Radcos     : R A D C O S ;
+Radtan     : R A D T A N ;
 
 Right   : R I G H T | R T ;
 Forward : F O R W A R D | F D ;

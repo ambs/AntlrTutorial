@@ -20,7 +20,9 @@ public class ExprParam : Parameter
         {
             LogoLexer.Sum => values.Aggregate(0f, (a, b) => a + b),
             LogoLexer.Difference => values[0] - values[1],
-            LogoLexer.Quotient => values.Length == 1 ? 1 / values[0] : values[0] / values[1],   // possible exception
+            LogoLexer.Minus => - values[0],
+            // possible exception
+            LogoLexer.Quotient => values.Length == 1 ? 1 / values[0] : values[0] / values[1],  
             LogoLexer.Product => values.Aggregate(1f, (a,b) => a * b),
             LogoLexer.Power => MathF.Pow(values[0], values[1]),
             _ => 0

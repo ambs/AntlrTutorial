@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildAntlr", "BuildAntlr\Bu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logo2Svg", "Logo2Svg\Logo2Svg.csproj", "{3980F08B-E758-4212-949E-9671D9DF86BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogoTests", "LogoTests\LogoTests.csproj", "{02FEFC55-816C-4DBD-9782-5ECF54CD4C8E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{3980F08B-E758-4212-949E-9671D9DF86BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3980F08B-E758-4212-949E-9671D9DF86BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3980F08B-E758-4212-949E-9671D9DF86BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02FEFC55-816C-4DBD-9782-5ECF54CD4C8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02FEFC55-816C-4DBD-9782-5ECF54CD4C8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02FEFC55-816C-4DBD-9782-5ECF54CD4C8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02FEFC55-816C-4DBD-9782-5ECF54CD4C8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

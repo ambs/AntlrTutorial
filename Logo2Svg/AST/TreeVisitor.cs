@@ -58,8 +58,7 @@ namespace Logo2Svg.AST
         public override INode VisitUnaryMinus([NotNull] LogoParser.UnaryMinusContext context)
         {
             var sub = Visit<Parameter>(context.expr());
-            var zero = new ValueParam(0f);
-            return new ExprParam(LogoLexer.Difference, zero, sub);
+            return new ExprParam(LogoLexer.Minus, sub);
         }
 
         public override INode VisitCommand([NotNull] LogoParser.CommandContext context)

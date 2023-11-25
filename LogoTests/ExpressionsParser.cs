@@ -82,5 +82,11 @@ public class ExpressionsParser
         var result = param.Value(null);
         Assert.AreEqual(value, result, $"Correctly priorities for {expr}");
     }
+
+    [TestMethod]
+    public void DivisionByZero()
+    {
+        Assert.ThrowsException<DivideByZeroException>(() => "10/0".ToParameter().Value(null));
+    }
     
 }

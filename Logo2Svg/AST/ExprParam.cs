@@ -22,7 +22,9 @@ public class ExprParam : Parameter
             LogoLexer.Difference => values[0] - values[1],
             LogoLexer.Minus => - values[0],
             // possible exception
-            LogoLexer.Quotient => values.Length == 1 ? 1 / values[0] : values[0] / values[1],  
+            LogoLexer.Quotient => values.Length == 1 ? 
+                values[0] != 0 ? 1 / values[0] : throw new DivideByZeroException(): 
+                values[1] != 0 ? values[0] / values[1] : throw new DivideByZeroException(),  
             LogoLexer.Product => values.Aggregate(1f, (a,b) => a * b),
             LogoLexer.Power => MathF.Pow(values[0], values[1]),
             LogoLexer.Remainder => MathF.Abs(values[0] % values[1]) * MathF.Sign(values[0]),

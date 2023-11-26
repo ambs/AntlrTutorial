@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - name: Install Java
-      run: sudo apt-get install -y sudo apt install default-jre
+      run: sudo apt-get install -y default-jre
     - name: Download and Install Antlr
       run: sudo mkdir -p /opt/local/lib && sudo curl -L "https://www.antlr.org/download/antlr-4.13.1-complete.jar" -o /opt/local/lib/antlr-4.13.1-complete.jar
     - uses: actions/checkout@v3

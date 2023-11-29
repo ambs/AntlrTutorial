@@ -50,4 +50,37 @@ public class ExprParam : Parameter
             _ => 0
         };
     }
+
+    public override string ToString()
+    {
+        var values = _parameters.Select(p => p.ToString()).ToArray();
+        var @params = string.Join(" ", values.Select(v => $"({v})"));
+        var op = _op switch {
+            LogoLexer.Sum => "sum",
+            LogoLexer.Difference => "difference",
+            LogoLexer.Minus => "minus",
+            LogoLexer.Quotient => "quotient",  
+            LogoLexer.Product => "product",
+            LogoLexer.Power => "power",
+            LogoLexer.Remainder => "remainder",
+            LogoLexer.Modulo  => "modulo",
+            LogoLexer.Abs => "abs",
+            LogoLexer.Int => "int",
+            LogoLexer.Round => "round",
+            LogoLexer.Sqrt => "sqrt",
+            LogoLexer.Exp => "exp",
+            LogoLexer.Ln => "ln",
+            LogoLexer.Log10 => "log10",
+            LogoLexer.Sin => "sin",
+            LogoLexer.Cos => "cos",
+            LogoLexer.Tan => "tan",
+            LogoLexer.Radsin => "radsin",
+            LogoLexer.Radcos => "radcos",
+            LogoLexer.Radtan => "radtan",
+            LogoLexer.Arctan => "arctan",
+            LogoLexer.Radarctan => "radarctan",
+            _ => ""
+        };
+        return $"({op} {@params})";
+    }
 }

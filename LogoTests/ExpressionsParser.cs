@@ -89,4 +89,59 @@ public class ExpressionsParser
         Assert.ThrowsException<DivideByZeroException>(() => "10/0".ToParameter().Value(null));
     }
     
+    [TestMethod]
+    [DataRow("sum 4 3.2", "(sum (4) (3.2))")]
+    [DataRow("difference 4 3.2", "(difference (4) (3.2))")]
+    [DataRow("product 2 4.3", "(product (2) (4.3))")]
+    [DataRow("quotient 3 2", "(quotient (3) (2))")]
+    [DataRow("power 2 3", "(power (2) (3))")]
+    [DataRow("remainder 2 2", "(remainder (2) (2))")]
+    [DataRow("modulo 2 2", "(modulo (2) (2))")]
+    [DataRow("remainder -3 2", "(remainder ((minus (3))) (2))")]
+    [DataRow("remainder 3 -2", "(remainder (3) ((minus (2))))")]
+    [DataRow("modulo -3 2", "(modulo ((minus (3))) (2))")]
+    [DataRow("modulo 3 -2", "(modulo (3) ((minus (2))))")]
+    [DataRow("minus 4", "(minus (4))")]
+    [DataRow("-3.2", "(minus (3.2))")]
+    [DataRow("4 + 3.2", "(sum (4) (3.2))")]
+    [DataRow("3 - 2.1", "(difference (3) (2.1))")]
+    [DataRow("3 * 2.3", "(product (3) (2.3))")]
+    [DataRow("2 / 4", "(quotient (2) (4))")]
+    [DataRow("2 % 4", "(remainder (2) (4))")]
+    [DataRow("9.3 ^ 2", "(power (9.3) (2))")]
+    [DataRow("(sum 1 2 3 4 5 6 7 8 9)", "(sum (1) (2) (3) (4) (5) (6) (7) (8) (9))")]
+    [DataRow("(product 4 3 2 1)", "(product (4) (3) (2) (1))")]
+    [DataRow("(quotient 4)", "(quotient (4))")]
+    [DataRow("abs -10.2", "(abs ((minus (10.2))))")]
+    [DataRow("int 5.5", "(int (5.5))")]
+    [DataRow("round 5.5", "(round (5.5))")]
+    [DataRow("(sqrt 4)", "(sqrt (4))")]
+    [DataRow("sqrt 5", "(sqrt (5))")]
+    [DataRow("exp 4", "(exp (4))")]
+    [DataRow("Log10 11", "(log10 (11))")]
+    [DataRow("Ln 10", "(ln (10))")]
+    [DataRow("sin 3.1415", "(sin (3.1415))")]
+    [DataRow("cos 3.1415", "(cos (3.1415))")]
+    [DataRow("tan 3.1415", "(tan (3.1415))")]
+    [DataRow("radsin 180", "(radsin (180))")]
+    [DataRow("(radcos 180)", "(radcos (180))")]
+    [DataRow("radtan 180", "(radtan (180))")]
+    [DataRow("arctan 3.1415", "(arctan (3.1415))")]
+    [DataRow("radarctan 180", "(radarctan (180))")]
+    [DataRow("(arctan 3.1415 3.1415)", "(arctan (3.1415) (3.1415))")]
+    [DataRow("(radarctan 180 180)", "(radarctan (180) (180))")]
+    [DataRow("2 * 3 + 4", "(sum ((product (2) (3))) (4))")]
+    [DataRow("4 + 3 * 2", "(sum (4) ((product (3) (2))))")]
+    [DataRow("2 + 3 ^ 2", "(sum (2) ((power (3) (2))))")]
+    [DataRow("3 ^ 2 + 2", "(sum ((power (3) (2))) (2))")]
+    [DataRow("3 ^ 2 ^ 3", "(power (3) ((power (2) (3))))")]
+    [DataRow(" 3 * - 2", "(product (3) ((minus (2))))")]
+    public void Stringification(string expr, string expected)
+    {
+        var param = expr.ToParameter();
+        var result = param.ToString();
+        Assert.AreEqual(expected, result);
+    }
+
+    
 }

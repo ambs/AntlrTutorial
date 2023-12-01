@@ -4,10 +4,10 @@ namespace Logo2Svg.AST;
 
 public class ValueParam : Parameter
 {
-    private readonly float _value;
-    public ValueParam(float value) =>_value = value;
+    public readonly float FloatValue;
+    public ValueParam(float floatValue) => FloatValue = floatValue;
     
-    public override string ToString() => _value.ToString(CultureInfo.InvariantCulture);
+    public override string ToString() => FloatValue.ToString(CultureInfo.InvariantCulture);
 
-    public override float Value(Turtle turtle) => _value;
+    public override float Value(Turtle turtle) => FloatValue;
 }

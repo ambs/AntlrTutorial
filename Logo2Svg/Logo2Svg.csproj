@@ -16,22 +16,22 @@
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
   </ItemGroup>
 
-  <Target Name="BuildAntlr" BeforeTargets="CoreCompile" Inputs="$(GrammarPath)/Logo.g4" Outputs="$(GrammarPath)/LogoParser.cs $(GrammarPath)/LogoLexer.cs $(GrammarPath)/LogoBaseVisitor.cs $(GrammarPath)/LogoVisitor.cs">
-     <BuildAntlr JavaPath="/usr/bin/java" AntlrJar="/opt/local/lib/antlr-4.13.1-complete.jar" Listeners="false" Namespace="Logo2Svg.Language" Visitors="true" OutputDir="$(GrammarPath)" Files="$(GrammarPath)/Logo.g4">
+  <Target Name="BuildAntlr" BeforeTargets="CoreCompile" Inputs="$(GrammarPath)/LogoLexer.g4 $(GrammarPath)/LogoParser.g4" Outputs="$(GrammarPath)/LogoParser.cs $(GrammarPath)/LogoLexer.cs $(GrammarPath)/LogoBaseVisitor.cs $(GrammarPath)/LogoVisitor.cs">
+     <BuildAntlr JavaPath="/usr/bin/java" AntlrJar="/opt/local/lib/antlr-4.13.1-complete.jar" Listeners="false" Namespace="Logo2Svg.Language" Visitors="true" OutputDir="$(GrammarPath)" Files="$(GrammarPath)/LogoLexer.g4 $(GrammarPath)/LogoParser.g4">
      </BuildAntlr>
      <ItemGroup>
         <Compile Include="$(GrammarPath)/LogoParser.cs" />
         <Compile Include="$(GrammarPath)/LogoLexer.cs" />
-        <Compile Include="$(GrammarPath)/LogoVisitor.cs" />
-        <Compile Include="$(GrammarPath)/LogoBaseVisitor.cs" />
+        <Compile Include="$(GrammarPath)/LogoParserVisitor.cs" />
+        <Compile Include="$(GrammarPath)/LogoParserBaseVisitor.cs" />
      </ItemGroup>
   </Target>
 
   <Target Name="CleanGeneratedFiles" BeforeTargets="Build">
         <Delete Files="$(GrammarPath)/LogoParser.cs" />
         <Delete Files="$(GrammarPath)/LogoLexer.cs" />
-        <Delete Files="$(GrammarPath)/LogoVisitor.cs" />
-        <Delete Files="$(GrammarPath)/LogoBaseVisitor.cs" />
+        <Delete Files="$(GrammarPath)/LogoParserVisitor.cs" />
+        <Delete Files="$(GrammarPath)/LogoParserBaseVisitor.cs" />
   </Target>
 
 </Project>

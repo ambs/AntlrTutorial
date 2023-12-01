@@ -5,7 +5,7 @@ using Logo2Svg.Language;
 
 namespace Logo2Svg.AST
 {
-    public class TreeVisitor : LogoBaseVisitor<INode>
+    public class TreeVisitor : LogoParserBaseVisitor<INode>
     {
         public override INode VisitScalar([NotNull] LogoParser.ScalarContext context)
         {

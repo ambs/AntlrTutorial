@@ -1,4 +1,5 @@
 using Antlr4.Runtime;
+using Logo2Svg;
 using Logo2Svg.AST;
 using Logo2Svg.Language;
 
@@ -143,5 +144,17 @@ public class ExpressionsParser
         Assert.AreEqual(expected, result);
     }
 
-    
+    [TestMethod]
+    public void Variable()
+    {
+        var tree = @"MAKE ""a 10 MAKE ""b 20 MAKE ""c thing ""a + :b".ToAst();
+        var turtle = new Turtle();
+        tree.Execute(turtle);
+        Assert.IsTrue(turtle.RetrieveVariable("a", out var val1));
+        Assert.AreEqual(10, val1);
+        Assert.IsTrue(turtle.RetrieveVariable("b", out var val2));
+        Assert.AreEqual(20, val2);
+        Assert.IsTrue(turtle.RetrieveVariable("c", out var val3));
+        Assert.AreEqual(30, val3);
+    }
 }

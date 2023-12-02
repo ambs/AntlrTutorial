@@ -22,9 +22,9 @@ namespace Logo2Svg.AST
             return $"{Name}({parameters})";
         }
 
-        private Parameter Parameter(int i) => Params[i];
+        public Parameter Parameter(int i) => Params[i];
 
-        private T Parameter<T>(int i)
+        public T Parameter<T>(int i)
         {
             if (i < 0 || i >= Params.Count) throw new IndexOutOfRangeException("Parameter out of bounds");
             if (Params[i] is not T p) throw new InvalidCastException("Invalid parameter type");
@@ -35,6 +35,17 @@ namespace Logo2Svg.AST
         {
             switch (Id)
             {
+                case LogoLexer.Show:
+                {
+                    var value = Parameter(0).Value(turtle);
+                    Console.WriteLine(value);
+                    break;
+                }
+                case LogoLexer.Make:
+                {
+                    turtle.DefineVariable(Parameter<VarName>(0).Name, Parameter(1).Value(turtle));
+                    break;
+                }
                 case LogoLexer.Forward:
                 {
                     var value = Parameter(0).Value(turtle);

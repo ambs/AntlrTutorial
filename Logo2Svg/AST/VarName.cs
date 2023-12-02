@@ -2,17 +2,11 @@ namespace Logo2Svg.AST;
 
 public class VarName : Parameter
 {
-    private string _varName;
+    public readonly string Name;
 
-    public VarName(string varName)
-    {
-        _varName = varName;
-    }
-    public override float Value(Turtle turtle)
-    {
-        return turtle.RetrieveVariable(_varName, out var expr) ? 
-            expr.Value(turtle) : 0f;
-    }
+    public VarName(string varName) => Name = varName;
+    
+    public override float Value(Turtle turtle) => turtle.RetrieveVariable(Name, out var expr) ? expr : 0f;
 
-    public override string ToString() => $@"""{_varName}";
+    public override string ToString() => $@"""{Name}";
 }

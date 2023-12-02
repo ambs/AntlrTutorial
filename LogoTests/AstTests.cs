@@ -32,4 +32,30 @@ public class AstTests
         Assert.IsNotNull(param);
         Assert.AreEqual(10f, param.FloatValue);
     }
+
+    [TestMethod]
+    public void VariableThings()
+    {
+        var tree = @"MAKE ""a 10 MAKE ""b 20 MAKE ""c thing ""a + :b".ToAst() as Program;
+        Assert.IsNotNull(tree);
+        Assert.AreEqual(3, tree.Count);
+
+        var names = new[] {"a", "b", "c"};
+        for (var i = 0; i < 3; i++)
+        {
+            Assert.AreEqual(LogoLexer.Make, tree[i].Id);
+            Assert.AreEqual(names[i], (tree[i].Params[0] as VarName)?.Name);
+        }
+        Assert.AreEqual(10f, (tree[0].Params[1] as ValueParam)?.FloatValue);
+        Assert.AreEqual(20f, (tree[1].Params[1] as ValueParam)?.FloatValue);
+        var sum = tree[2].Params[1] as ExprParam;
+        Assert.IsNotNull(sum);
+        Assert.AreEqual(LogoLexer.Sum, sum.Op);
+        for (var i = 0; i < 2; i++)
+        {
+            var varName = sum.Parameters[i] as VarName;
+            Assert.IsNotNull(varName);
+            Assert.AreEqual(names[i], varName.Name);
+        }
+    }
 }

@@ -9,7 +9,7 @@ public class Turtle
     public Point Position;
     public Colour Colour = new(255, 0, 0);
 
-    private Dictionary<string, Parameter> _symbolTable = new();
+    private readonly Dictionary<string, float> _symbolTable = new();
     
     public const float ToRadians = MathF.PI / 180f; 
     private float _rotation;
@@ -56,9 +56,9 @@ public class Turtle
         }
     }
 
-    public void DefineVariable(string varName, Parameter value) => _symbolTable[varName] = value;
+    public void DefineVariable(string varName, float value) => _symbolTable[varName] = value;
 
-    public bool RetrieveVariable(string varName, out Parameter value) => _symbolTable.TryGetValue(varName, out value);
+    public bool RetrieveVariable(string varName, out float value) => _symbolTable.TryGetValue(varName, out value);
     
     public void Reset()
     {

@@ -8,7 +8,7 @@ namespace Logo2Svg.AST
     public class TreeVisitor : LogoParserBaseVisitor<INode>
     {
         public override INode VisitVariable(LogoParser.VariableContext context)
-            => new VarName(context.Variable().GetText());
+            => new VarName(context.Variable()?.GetText() ?? context.VariableRef()?.GetText());
         
 
         public override INode VisitScalar([NotNull] LogoParser.ScalarContext context)

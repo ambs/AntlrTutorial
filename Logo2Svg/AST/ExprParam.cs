@@ -1,22 +1,24 @@
+using System.Collections.ObjectModel;
 using Logo2Svg.Language;
 
 namespace Logo2Svg.AST;
 
 public class ExprParam : Parameter
 {
-    private readonly int _op;
+    public readonly int Op;
     private readonly List<Parameter> _parameters;
+    public ReadOnlyCollection<Parameter> Parameters => _parameters.AsReadOnly();
 
     public ExprParam(int op, params Parameter[] parameters)
     {
-        _op = op;
+        Op = op;
         _parameters = new List<Parameter>(parameters);
     }
     
     public override float Value(Turtle turtle)
     {
         var values = _parameters.Select(p => p.Value(turtle)).ToArray();
-        return _op switch
+        return Op switch
         {
             LogoLexer.Sum => values.Aggregate(0f, (a, b) => a + b),
             LogoLexer.Difference => values[0] - values[1],
@@ -55,7 +57,7 @@ public class ExprParam : Parameter
     {
         var values = _parameters.Select(p => p.ToString()).ToArray();
         var @params = string.Join(" ", values.Select(v => $"({v})"));
-        var op = _op switch {
+        var op = Op switch {
             LogoLexer.Sum => "sum",
             LogoLexer.Difference => "difference",
             LogoLexer.Minus => "minus",

@@ -22,7 +22,7 @@ namespace Logo2Svg.AST
             return $"{Name}({parameters})";
         }
 
-        public Parameter Parameter(int i) => Params[i];
+        private Parameter Parameter(int i) => Params[i];
 
         public T Parameter<T>(int i)
         {

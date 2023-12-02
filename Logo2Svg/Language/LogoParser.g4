@@ -5,14 +5,14 @@ options { tokenVocab=LogoLexer; }
 program : command+ EOF
         ;
 
-command : simpleCommand
-        | SetPos squarePoint
-        | SetXY simplePoint
-        | Home
-        | Arc expr expr
-        | Make Variable expr
-        | Name expr Variable
-        | Show expr
+command : simpleCommand          #basicCommand
+        | SetPos squarePoint     #setPosition
+        | SetXY simplePoint      #setPosition
+        | Home                   #home
+        | Arc expr expr          #arc
+        | Make Variable expr     #setVariable
+        | Name expr Variable     #setVariable
+        | Show expr              #show
         ;
 
 simpleCommand : cmd=(Right|Left|Forward|Back|SetX|SetY|SetH) expr ;

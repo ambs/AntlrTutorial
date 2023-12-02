@@ -7,6 +7,10 @@ namespace Logo2Svg.AST
 {
     public class TreeVisitor : LogoParserBaseVisitor<INode>
     {
+        public override INode VisitVariable(LogoParser.VariableContext context)
+            => new VarName(context.Variable().GetText());
+        
+
         public override INode VisitScalar([NotNull] LogoParser.ScalarContext context)
         {
             return context.value() is { } ctx ? Visit<Parameter>(ctx) : Visit<Parameter>(context.expr());
@@ -61,47 +65,31 @@ namespace Logo2Svg.AST
             var sub = Visit<Parameter>(context.expr());
             return new ExprParam(LogoLexer.Minus, sub);
         }
-
-        public override INode VisitCommand([NotNull] LogoParser.CommandContext context)
+        
+        public override INode VisitHome([NotNull] LogoParser.HomeContext context)
         {
-            IToken command = null;
-            List<Parameter> parameters = new();
+            return new Command(LogoLexer.Home, "Home");
+        }
 
-            if (context.simpleCommand() is { } splCmd)
-            {
-                return Visit<Command>(splCmd);
-            }
+        public override INode VisitSetPosition(LogoParser.SetPositionContext context)
+        {
+            var (command, param) = context.SetXY() is { } setXyCtx?
+                (setXyCtx.Symbol, Visit<Parameter>(context.simplePoint())) :
+                (context.SetPos().Symbol, Visit<Parameter>(context.squarePoint()));
+            
+            return new Command(command.Type, command.Text, param);
+        }
 
-            if (context.Home() is { } homeCtx)
-            {
-                command = homeCtx.Symbol;
-            }
-
-            if (context.SetXY() is { } setXyCtx)
-            {
-                command = setXyCtx.Symbol;
-                parameters.Add(Visit<Parameter>(context.simplePoint()));
-            }
-
-            if (context.SetPos() is { } setPosCtx)
-            {
-                command = setPosCtx.Symbol;
-                parameters.Add(Visit<Parameter>(context.squarePoint()));
-            }
-
-            if (context.Arc() is { } argCtx)
-            {
-                command = argCtx.Symbol;
-                parameters.AddRange(context.expr().Select(Visit<Parameter>));
-            }
-
-            return command is not null ? new Command(command.Type, command.Text, parameters.ToArray()) : null;
+        public override INode VisitArc(LogoParser.ArcContext context)
+        {
+            var parameters = context.expr().Select(Visit<Parameter>).ToArray();
+            return new Command(LogoLexer.Arc, "Arc", parameters);
         }
 
         public override INode VisitProgram([NotNull] LogoParser.ProgramContext context)
         {
             Program program = new();
-            program.AddRange(context.command().Select(cmd => Visit<Command>(cmd)).ToList());
+            program.AddRange(context.command().Select(Visit<Command>).ToList());
             return program;
         }
 
@@ -133,6 +121,17 @@ namespace Logo2Svg.AST
             var parameters = context.expr().Select(Visit<Parameter>);
             return new ExprParam(context.fun.Type, parameters.ToArray());
         }
+
+        public override INode VisitSetVariable(LogoParser.SetVariableContext context)
+        {
+            var varName = context.Variable().GetText();
+            var value = Visit<Parameter>(context.expr());
+            return new Command(LogoLexer.Make, "make", new VarName(varName), value);
+        }
+
+        public override INode VisitShow(LogoParser.ShowContext context)
+        => new Command(LogoLexer.Show, "show", Visit<Parameter>(context.expr()));
+        
 
         public T Visit<T>(IParseTree tree) => (T)Visit(tree);
     }

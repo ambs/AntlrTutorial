@@ -48,7 +48,7 @@ public class AstTests
         }
         Assert.AreEqual(10f, tree[0].Parameter<ValueParam>(1).FloatValue);
         Assert.AreEqual(20f, tree[1].Parameter<ValueParam>(1).FloatValue);
-        var sum = tree[2].Parameter<ExprParam>(2);
+        var sum = tree[2].Parameter<ExprParam>(1);
         Assert.IsNotNull(sum);
         Assert.AreEqual(LogoLexer.Sum, sum.Op);
         for (var i = 0; i < 2; i++)

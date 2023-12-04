@@ -1,3 +1,4 @@
+using Logo2Svg.AST;
 using Logo2Svg.SVG;
 
 namespace Logo2Svg;
@@ -8,6 +9,8 @@ public class Turtle
     public Point Position;
     public Colour Colour = new(255, 0, 0);
 
+    private readonly Dictionary<string, float> _symbolTable = new();
+    
     public const float ToRadians = MathF.PI / 180f; 
     private float _rotation;
     public float Rotation
@@ -22,8 +25,8 @@ public class Turtle
     }
     
     private static float Norm(float a) {
-        while(a > 2*MathF.PI) a -= 2f*MathF.PI;
-        while(a < 0f) a += 2f*MathF.PI;
+        while (a > 2 * MathF.PI) a -= 2f * MathF.PI;
+        while (a < 0f) a += 2f * MathF.PI;
         return a;
     }
 
@@ -52,6 +55,10 @@ public class Turtle
             return false;
         }
     }
+
+    public void DefineVariable(string varName, float value) => _symbolTable[varName] = value;
+
+    public bool RetrieveVariable(string varName, out float value) => _symbolTable.TryGetValue(varName, out value);
     
     public void Reset()
     {

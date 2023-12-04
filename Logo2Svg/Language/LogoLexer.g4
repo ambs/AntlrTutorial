@@ -1,46 +1,23 @@
-grammar Logo;
+lexer grammar LogoLexer;
 
-// Parser
+RightSqBracket : ']' ;
+LeftSqBracket  : '[' ;
+MinusSign      : '-' ;
+PlusSign       : '+' ;
+AsteriskSign   : '*' ;
+SlashSigh      : '/' ;
+LeftParen      : '(' ;
+RightParen     : ')' ;
+CircunflexSign : '^' ;
+PercentSign    : '%' ;
 
-program : command+ EOF
-        ;
+Variable    : '"' [a-zA-Z0-9_]+ { Text = Text.Substring(1); };
+VariableRef : ':' [a-zA-Z0-9_]+ { Text = Text.Substring(1); };
 
-command : simpleCommand
-        | SetPos squarePoint
-        | SetXY simplePoint
-        | Home
-        | Arc expr expr
-        ;
-
-simpleCommand : cmd=(Right|Left|Forward|Back|SetX|SetY|SetH) expr ;
-
-simplePoint : expr expr
-            ;
-
-squarePoint : '[' expr expr ']'
-            ;
-
-expr : cmd=(Sum|Difference|Product|
-                  Quotient|Power|Remainder|Modulo) expr expr  #prefixBinaryOp 
-     | op=(Minus|'-') expr                                    #unaryMinus
-     | fun=(Abs|Int|Round|Sqrt|Exp|Log10|Ln|Arctan|Sin|
-              Cos|Tan|Radarctan|Radsin|Radcos|Radtan) expr    #arithFuncs
-     | '(' fun=(Arctan|Radarctan) expr expr ')'               #arithFuncs
-     | '(' Sum expr+ ')'                                      #summation
-     | '(' Product expr+ ')'                                  #product
-     | '(' Quotient expr ')'                                  #quotient
-     | <assoc=right> expr op='^' expr                         #binaryOp
-     | <assoc=left> expr op=('*'|'/'|'%') expr                #binaryOp
-     | <assoc=left> expr op=('+'|'-') expr                    #binaryOp
-     | value                                                  #scalar
-     | '(' expr ')'                                           #scalar
-     ;
-
-value : IntegerValue
-      | RealValue
-      ;
-
-// Lexer
+Make       : M A K E ;
+Name       : N A M E ;
+Thing      : T H I N G ;
+Show       : S H O W ;
 
 Minus      : M I N U S ;
 Power      : P O W E R ;

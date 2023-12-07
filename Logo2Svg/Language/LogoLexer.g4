@@ -1,22 +1,31 @@
 lexer grammar LogoLexer;
 
-RightSqBracket : ']' ;
-LeftSqBracket  : '[' ;
-MinusSign      : '-' ;
-PlusSign       : '+' ;
-AsteriskSign   : '*' ;
-SlashSigh      : '/' ;
-LeftParen      : '(' ;
-RightParen     : ')' ;
-CircunflexSign : '^' ;
-PercentSign    : '%' ;
+RightSqBracket   : ']' ;
+LeftSqBracket    : '[' ;
+MinusSign        : '-' ;
+PlusSign         : '+' ;
+AsteriskSign     : '*' ;
+SlashSigh        : '/' ;
+LeftParen        : '(' ;
+RightParen       : ')' ;
+CircunflexSign   : '^' ;
+PercentSign      : '%' ;
+LessSign         : '<' ;
+GreaterSign      : '>' ;
+LessEqualSign    : '<=' ;
+GreaterEqualSign : '>=' ;
 
 Variable    : '"' [a-zA-Z0-9_]+ { Text = Text.Substring(1); };
 VariableRef : ':' [a-zA-Z0-9_]+ { Text = Text.Substring(1); };
 
-Bye        : B Y E ;
-Repeat     : R E P E A T ;
-Forever    : F O R E V E R ;
+Less         : L E S S (P | '?');
+Greater      : G R E A T E R (P | '?');
+LessEqual    : L E S S E Q U A L (P | '?');
+GreaterEqual : G R E A T E R E Q U A L (P | '?');
+
+Bye          : B Y E ;
+Repeat       : R E P E A T ;
+Forever      : F O R E V E R ;
 
 Make       : M A K E ;
 Name       : N A M E ;

@@ -20,6 +20,11 @@ public class ExprParam : Parameter
         var values = _parameters.Select(p => p.Value(turtle)).ToArray();
         return Op switch
         {
+            LogoLexer.Less => values[0] < values[1] ? 1 : 0, 
+            LogoLexer.Greater => values[0] > values[1] ? 1 : 0,
+            LogoLexer.LessEqual => values[0] <= values[1] ? 1 : 0,
+            LogoLexer.GreaterEqual => values[0] >= values[1] ? 1 : 0,
+            
             LogoLexer.Sum => values.Aggregate(0f, (a, b) => a + b),
             LogoLexer.Difference => values[0] - values[1],
             LogoLexer.Minus => - values[0],

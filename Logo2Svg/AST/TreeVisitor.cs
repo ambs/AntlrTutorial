@@ -46,14 +46,18 @@ namespace Logo2Svg.AST
         public override INode VisitBinaryOp([NotNull] LogoParser.BinaryOpContext context)
         {
             var parcels = context.expr().Select(Visit<Parameter>);
-            var op = context.op.Text switch
+            var op = context.op.Type switch
             {
-                "^" => LogoLexer.Power,
-                "+" => LogoLexer.Sum,
-                "-" => LogoLexer.Difference,
-                "*" => LogoLexer.Product,
-                "/" => LogoLexer.Quotient,
-                "%" => LogoLexer.Remainder,
+                LogoLexer.CircunflexSign => LogoLexer.Power,
+                LogoLexer.PlusSign => LogoLexer.Sum,
+                LogoLexer.MinusSign => LogoLexer.Difference,
+                LogoLexer.AsteriskSign => LogoLexer.Product,
+                LogoLexer.SlashSigh => LogoLexer.Quotient,
+                LogoLexer.PercentSign => LogoLexer.Remainder,
+                LogoLexer.LessSign => LogoLexer.Less,
+                LogoLexer.GreaterSign => LogoLexer.Greater,
+                LogoLexer.LessEqualSign => LogoLexer.LessEqual,
+                LogoLexer.GreaterEqualSign => LogoLexer.GreaterEqual,
                 _ => throw new ArgumentOutOfRangeException()
             };
             return new ExprParam(op, parcels.ToArray());

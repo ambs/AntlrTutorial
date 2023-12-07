@@ -59,6 +59,27 @@ public class ExpressionsParser
     [DataRow("radarctan 180", 1.2626f, 0.001f)]
     [DataRow("(arctan 3.1415 3.1415)", MathF.PI / 4f, 0.001f)]
     [DataRow("(radarctan 180 180)", MathF.PI / 4f, 0.001f)]
+    
+    [DataRow("1 < 2", 1f)]
+    [DataRow("2 < 1", 0f)]
+    [DataRow("lessp 1 2", 1f)]
+    [DataRow("less? 2 1", 0f)]
+    [DataRow("1 > 2", 0f)]
+    [DataRow("2 > 1", 1f)]
+    [DataRow("greaterp 1 2", 0f)]
+    [DataRow("greater? 2 1", 1f)]
+    [DataRow("1 >= 2", 0f)]
+    [DataRow("2 >= 1", 1f)]
+    [DataRow("2 >= 2", 1f)]
+    [DataRow("greaterequalp 1 2", 0f)]
+    [DataRow("greaterequal? 2 1", 1f)]
+    [DataRow("greaterequalp 2 2", 1f)]
+    [DataRow("1 <= 2", 1f)]
+    [DataRow("2 <= 1", 0f)]
+    [DataRow("2 <= 2", 1f)]
+    [DataRow("lessequalp 1 2", 1f)]
+    [DataRow("lessequal? 2 1", 0f)]
+    [DataRow("lessequalp 2 2", 1f)]
     public void ParseBasicOperators(string expr, float value, float? delta = null)
     {
         var param = expr.ToParameter();
@@ -77,6 +98,9 @@ public class ExpressionsParser
     [DataRow("3 ^ 2 + 2", 11f)]
     [DataRow("3 ^ 2 ^ 3", 6561f)]
     [DataRow(" 3 * - 2", -6f)]
+    
+    [DataRow("2 + 2 >= 4", 1f)]
+    [DataRow("2 + 2 <= 2", 0f)]
     public void Priorities(string expr, float value)
     {
         var param = expr.ToParameter();

@@ -25,6 +25,10 @@ public class ExprParam : Parameter
             LogoLexer.LessEqual => values[0] <= values[1] ? 1 : 0,
             LogoLexer.GreaterEqual => values[0] >= values[1] ? 1 : 0,
             
+            LogoLexer.And => values.Select(v => v >= 1f).Aggregate(true, (a, b) => a && b) ? 1 : 0,
+            LogoLexer.Xor => values.Select(v => v >= 1f).Aggregate(false, (a, b) => a ^ b) ? 1 : 0,
+            LogoLexer.Or => values.Select(v => v >= 1f).Aggregate(false, (a, b) => a || b) ? 1 : 0,
+            
             LogoLexer.Sum => values.Aggregate(0f, (a, b) => a + b),
             LogoLexer.Difference => values[0] - values[1],
             LogoLexer.Minus => - values[0],

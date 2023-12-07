@@ -17,6 +17,9 @@ namespace Logo2Svg.AST
 
         public override INode VisitValue([NotNull] LogoParser.ValueContext context)
         {
+            if (context.True() is not null) return new ValueParam(1f);
+            if (context.False() is not null) return new ValueParam(0f);
+            
             var valueStr = (context.IntegerValue() ?? context.RealValue()).Symbol.Text;
             return new ValueParam(float.Parse(valueStr));
         }
@@ -58,7 +61,7 @@ namespace Logo2Svg.AST
                 LogoLexer.GreaterSign => LogoLexer.Greater,
                 LogoLexer.LessEqualSign => LogoLexer.LessEqual,
                 LogoLexer.GreaterEqualSign => LogoLexer.GreaterEqual,
-                _ => throw new ArgumentOutOfRangeException()
+                _ => context.op.Type 
             };
             return new ExprParam(op, parcels.ToArray());
         }
@@ -100,6 +103,12 @@ namespace Logo2Svg.AST
 
         public override INode VisitProgram([NotNull] LogoParser.ProgramContext context)
             => new Program(context.command().Select(Visit<Command>));
+
+        public override INode VisitBoolean([NotNull] LogoParser.BooleanContext context)
+        {
+            var parcels = context.expr().Select(Visit<Parameter>);
+            return new ExprParam(context.cmd.Type, parcels.ToArray());
+        }
 
         public override INode VisitSummation([NotNull] LogoParser.SummationContext context)
         {

@@ -27,6 +27,12 @@ Bye          : B Y E ;
 Repeat       : R E P E A T ;
 Forever      : F O R E V E R ;
 
+And          : A N D ;
+Xor          : X O R ;
+Or           : O R ;
+True         : T R U E ;
+False        : F A L S E ;
+
 Make       : M A K E ;
 Name       : N A M E ;
 Thing      : T H I N G ;

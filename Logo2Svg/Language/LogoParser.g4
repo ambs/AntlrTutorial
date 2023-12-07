@@ -40,10 +40,12 @@ expr : cmd=(Sum|Difference|Product|Quotient|Power|Remainder|Modulo
      | '(' Sum expr+ ')'                                                   #summation
      | '(' Product expr+ ')'                                               #product
      | '(' Quotient expr ')'                                               #quotient
+     | '(' cmd=(And|Or|Xor) expr+ ')'                                      #boolean
      | <assoc=right> expr op='^' expr                                      #binaryOp
      | <assoc=left> expr op=('*'|'/'|'%') expr                             #binaryOp
      | <assoc=left> expr op=('+'|'-') expr                                 #binaryOp
      | <assoc=left> expr op=('<'|'>'|LessEqualSign|GreaterEqualSign) expr  #binaryOp
+     | <assoc=left> expr op=(And|Or|Xor) expr                              #binaryOp
      | value                                                               #scalar
      | '(' expr ')'                                                        #scalar
      | VariableRef                                                         #variable
@@ -52,4 +54,6 @@ expr : cmd=(Sum|Difference|Product|Quotient|Power|Remainder|Modulo
 
 value : IntegerValue
       | RealValue
+      | True
+      | False
       ;

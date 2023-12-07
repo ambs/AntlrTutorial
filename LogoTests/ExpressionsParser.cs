@@ -80,6 +80,15 @@ public class ExpressionsParser
     [DataRow("lessequalp 1 2", 1f)]
     [DataRow("lessequal? 2 1", 0f)]
     [DataRow("lessequalp 2 2", 1f)]
+    
+    [DataRow("1 and 1", 1f)]
+    [DataRow("1 and 0", 0f)]
+    [DataRow("0 or 1", 1f)]
+    [DataRow("0 or 0", 0f)]
+    [DataRow("0 xor 1", 1f)]
+    [DataRow("1 xor 1", 0f)]
+    [DataRow("(and 1 2 > 1 3 > 1)", 1f)]
+    [DataRow("(or false true)", 1f)]
     public void ParseBasicOperators(string expr, float value, float? delta = null)
     {
         var param = expr.ToParameter();

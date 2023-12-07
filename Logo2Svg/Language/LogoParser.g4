@@ -8,12 +8,20 @@ program : command+ EOF
 command : simpleCommand          #basicCommand
         | SetPos squarePoint     #setPosition
         | SetXY simplePoint      #setPosition
-        | Home                   #home
+        | cmd=(Home|Bye)         #atomicCmd
         | Arc expr expr          #arc
         | Make Variable expr     #setVariable
         | Name expr Variable     #setVariable
         | Show expr              #show
+        | controlStmt            #controlStatement      
         ;
+        
+cmdBlock : '[' command+ ']'
+         ;        
+        
+controlStmt : Repeat expr cmdBlock   #repeatStmt
+            | Forever cmdBlock       #foreverStmt
+            ;  
 
 simpleCommand : cmd=(Right|Left|Forward|Back|SetX|SetY|SetH) expr ;
 

@@ -7,13 +7,13 @@ namespace Logo2Svg.AST
     {
         private string Name { get; }
         public int Id { get;  }
-        public List<Parameter> Params;
+        public readonly List<INode> Params;
 
-        public Command(int id, string command, params Parameter[] @params)
+        public Command(int id, string command, params INode[] @params)
         {
             Id = id;
             Name = command;
-            Params = @params is null ? null : new List<Parameter>(@params);
+            Params = @params is null ? null : new List<INode>(@params);
         }
 
         public override string ToString()
@@ -22,7 +22,7 @@ namespace Logo2Svg.AST
             return $"{Name}({parameters})";
         }
 
-        private Parameter Parameter(int i) => Params[i];
+        private Parameter Parameter(int i) => Parameter<Parameter>(i);
 
         public T Parameter<T>(int i)
         {
@@ -35,6 +35,19 @@ namespace Logo2Svg.AST
         {
             switch (Id)
             {
+                case LogoLexer.Forever:
+                    while (!turtle.IsExiting) Parameter<CommandBlock>(0).Execute(turtle);
+                    break;
+                case LogoLexer.Repeat:
+                {
+                    var times = (int) Parameter(0).Value(turtle);
+                    for (var i = 0; i < times && !turtle.IsExiting; i++)
+                        Parameter<CommandBlock>(1).Execute(turtle);
+                    break;
+                }
+                case LogoLexer.Bye:
+                    turtle.Exiting();
+                    break;
                 case LogoLexer.Show:
                 {
                     var value = Parameter(0).Value(turtle);

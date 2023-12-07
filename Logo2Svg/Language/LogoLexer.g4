@@ -14,11 +14,14 @@ PercentSign    : '%' ;
 Variable    : '"' [a-zA-Z0-9_]+ { Text = Text.Substring(1); };
 VariableRef : ':' [a-zA-Z0-9_]+ { Text = Text.Substring(1); };
 
+Bye        : B Y E ;
+Repeat     : R E P E A T ;
+Forever    : F O R E V E R ;
+
 Make       : M A K E ;
 Name       : N A M E ;
 Thing      : T H I N G ;
 Show       : S H O W ;
-
 Minus      : M I N U S ;
 Power      : P O W E R ;
 Quotient   : Q U O T I E N T ;

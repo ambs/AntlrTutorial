@@ -9,6 +9,10 @@ public class Turtle
     public Point Position;
     public Colour Colour = new(255, 0, 0);
 
+    public bool IsExiting { get; private set; }
+
+    public void Exiting() => IsExiting = true;
+
     private readonly Dictionary<string, float> _symbolTable = new();
     
     public const float ToRadians = MathF.PI / 180f; 

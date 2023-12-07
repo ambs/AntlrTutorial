@@ -16,16 +16,8 @@
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
   </ItemGroup>
 
-  <Target Name="BuildAntlr" BeforeTargets="CoreCompile"
-          Inputs="$(GrammarPath)/LogoLexer.g4 $(GrammarPath)/LogoParser.g4"
-          Outputs="$(GrammarPath)/LogoParser.cs $(GrammarPath)/LogoLexer.cs $(GrammarPath)/LogoParserBaseVisitor.cs $(GrammarPath)/LogoParserVisitor.cs">
-    <BuildAntlr JavaPath="/usr/bin/java"
-                AntlrJar="/opt/local/lib/antlr-4.13.1-complete.jar"
-                Listeners="false"
-                Namespace="Logo2Svg.Language"
-                Visitors="true"
-                OutputDir="$(GrammarPath)"
-                Files="$(GrammarPath)/LogoLexer.g4 $(GrammarPath)/LogoParser.g4">
+  <Target Name="BuildAntlr" BeforeTargets="CoreCompile" Inputs="$(GrammarPath)/LogoLexer.g4 $(GrammarPath)/LogoParser.g4" Outputs="$(GrammarPath)/LogoParser.cs $(GrammarPath)/LogoLexer.cs $(GrammarPath)/LogoParserBaseVisitor.cs $(GrammarPath)/LogoParserVisitor.cs">
+    <BuildAntlr JavaPath="/usr/bin/java" AntlrJar="/opt/local/lib/antlr-4.13.1-complete.jar" Listeners="false" Namespace="Logo2Svg.Language" Visitors="true" OutputDir="$(GrammarPath)" Files="$(GrammarPath)/LogoLexer.g4 $(GrammarPath)/LogoParser.g4">
      </BuildAntlr>
      <ItemGroup>
         <Compile Include="$(GrammarPath)/LogoParser.cs" />

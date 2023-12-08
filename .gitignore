@@ -10,3 +10,5 @@ Logo2Svg/Language/Logo.tokens
 Logo2Svg/Language/LogoVisitor.cs
 Logo2Svg/.idea
 *~
+.idea/
+Logo.sln.DotSettings.user

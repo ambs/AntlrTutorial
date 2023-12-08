@@ -149,6 +149,13 @@ namespace Logo2Svg.AST
         public override INode VisitShow(LogoParser.ShowContext context)
             => new Command(LogoLexer.Show, "show", Visit<Parameter>(context.expr()));
 
+        public override INode VisitIfStmt(LogoParser.IfStmtContext context)
+            => new Command(LogoLexer.If, "if", Visit(context.expr()), Visit(context.cmdBlock()));
+        
+        public override INode VisitIfElseStmt(LogoParser.IfElseStmtContext context)
+            => new Command(LogoLexer.If, "ifElse",
+                Visit(context.expr()), Visit(context.cmdBlock(0)), Visit(context.cmdBlock(1)));
+        
         public T Visit<T>(IParseTree tree) => (T)Visit(tree);
     }
 }

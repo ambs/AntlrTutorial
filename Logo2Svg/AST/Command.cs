@@ -35,6 +35,19 @@ namespace Logo2Svg.AST
         {
             switch (Id)
             {
+                case LogoLexer.If:
+                {
+                    var condition = Parameter(0).Value(turtle).AsBool();
+                    if (condition) Parameter<CommandBlock>(1).Execute(turtle);
+                    break;
+                }
+                case LogoLexer.IfElse:
+                {
+                    var condition = Parameter(0).Value(turtle).AsBool();
+                    if (condition) Parameter<CommandBlock>(1).Execute(turtle);
+                    else Parameter<CommandBlock>(2).Execute(turtle);
+                    break;
+                }
                 case LogoLexer.Forever:
                     while (!turtle.IsExiting) Parameter<CommandBlock>(0).Execute(turtle);
                     break;

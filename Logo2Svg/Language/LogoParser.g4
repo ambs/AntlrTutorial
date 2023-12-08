@@ -19,8 +19,10 @@ command : simpleCommand          #basicCommand
 cmdBlock : '[' command+ ']'
          ;        
         
-controlStmt : Repeat expr cmdBlock   #repeatStmt
-            | Forever cmdBlock       #foreverStmt
+controlStmt : Repeat expr cmdBlock                           #repeatStmt
+            | Forever cmdBlock                               #foreverStmt
+            | If ('[' expr ']' | expr) cmdBlock              #ifStmt
+            | IfElse ('[' expr ']' | expr) cmdBlock cmdBlock #ifElseStmt
             ;  
 
 simpleCommand : cmd=(Right|Left|Forward|Back|SetX|SetY|SetH) expr ;

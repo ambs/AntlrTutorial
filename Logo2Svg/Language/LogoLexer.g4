@@ -23,6 +23,8 @@ Greater      : G R E A T E R (P | '?');
 LessEqual    : L E S S E Q U A L (P | '?');
 GreaterEqual : G R E A T E R E Q U A L (P | '?');
 
+IfElse       : I F E L S E ;
+If           : I F ;
 Bye          : B Y E ;
 Repeat       : R E P E A T ;
 Forever      : F O R E V E R ;

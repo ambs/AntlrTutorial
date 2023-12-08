@@ -14,20 +14,20 @@ public class ExprParam : Parameter
         Op = op;
         _parameters = new List<Parameter>(parameters);
     }
-    
+
     public override float Value(Turtle turtle)
     {
         var values = _parameters.Select(p => p.Value(turtle)).ToArray();
         return Op switch
         {
-            LogoLexer.Less => values[0] < values[1] ? 1 : 0, 
-            LogoLexer.Greater => values[0] > values[1] ? 1 : 0,
-            LogoLexer.LessEqual => values[0] <= values[1] ? 1 : 0,
-            LogoLexer.GreaterEqual => values[0] >= values[1] ? 1 : 0,
+            LogoLexer.Less => (values[0] < values[1]).AsFloat(), 
+            LogoLexer.Greater => (values[0] > values[1]).AsFloat(),
+            LogoLexer.LessEqual => (values[0] <= values[1]).AsFloat(),
+            LogoLexer.GreaterEqual => (values[0] >= values[1]).AsFloat(),
             
-            LogoLexer.And => values.Select(v => v >= 1f).Aggregate(true, (a, b) => a && b) ? 1 : 0,
-            LogoLexer.Xor => values.Select(v => v >= 1f).Aggregate(false, (a, b) => a ^ b) ? 1 : 0,
-            LogoLexer.Or => values.Select(v => v >= 1f).Aggregate(false, (a, b) => a || b) ? 1 : 0,
+            LogoLexer.And => values.Select(x => x.AsBool()).Aggregate(true, (a, b) => a && b).AsFloat(),
+            LogoLexer.Xor => values.Select(x => x.AsBool()).Aggregate(false, (a, b) => a ^ b).AsFloat(),
+            LogoLexer.Or => values.Select(x => x.AsBool()).Aggregate(false, (a, b) => a || b).AsFloat(),
             
             LogoLexer.Sum => values.Aggregate(0f, (a, b) => a + b),
             LogoLexer.Difference => values[0] - values[1],
@@ -67,6 +67,10 @@ public class ExprParam : Parameter
         var values = _parameters.Select(p => p.ToString()).ToArray();
         var @params = string.Join(" ", values.Select(v => $"({v})"));
         var op = Op switch {
+            LogoLexer.And => "and",
+            LogoLexer.Or => "or",
+            LogoLexer.Xor => "xor",
+            
             LogoLexer.Sum => "sum",
             LogoLexer.Difference => "difference",
             LogoLexer.Minus => "minus",

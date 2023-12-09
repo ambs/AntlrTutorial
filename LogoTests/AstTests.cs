@@ -58,4 +58,25 @@ public class AstTests
             Assert.AreEqual(names[i], varName.Name);
         }
     }
+
+    [TestMethod]
+    public void IfElse()
+    {
+        var tree = @"IfElse [ :b < 69 ] [ MAKE ""d 0 ] [ MAKE ""d 1 ]".ToAst() as Program;
+        Assert.IsNotNull(tree);
+        Assert.AreEqual(1, tree.Count);
+        var cmd = tree[0];
+        Assert.IsNotNull(cmd);
+        Assert.AreEqual(LogoLexer.IfElse, cmd.Id);
+        Assert.AreEqual(3, cmd.Params.Count);
+        var cmp = cmd.Parameter<ExprParam>(0);
+        Assert.IsNotNull(cmd);
+        Assert.AreEqual(LogoLexer.Less, cmp.Op);
+        var trueBranch = cmd.Parameter<CommandBlock>(1);
+        Assert.AreEqual(1, trueBranch.Count);
+        Assert.AreEqual(LogoLexer.Make, trueBranch[0].Id);
+        var falseBranch = cmd.Parameter<CommandBlock>(2);
+        Assert.AreEqual(1, falseBranch.Count);
+        Assert.AreEqual(LogoLexer.Make, falseBranch[0].Id);
+    }
 }

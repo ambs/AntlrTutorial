@@ -14,12 +14,24 @@ public class ExprParam : Parameter
         Op = op;
         _parameters = new List<Parameter>(parameters);
     }
-    
+
     public override float Value(Turtle turtle)
     {
         var values = _parameters.Select(p => p.Value(turtle)).ToArray();
         return Op switch
         {
+            LogoLexer.True => true.AsFloat(),
+            LogoLexer.False => false.AsFloat(),
+            LogoLexer.And => values.Select(x => x.AsBool()).Aggregate(true, (a, b) => a && b).AsFloat(),
+            LogoLexer.Xor => values.Select(x => x.AsBool()).Aggregate(false, (a, b) => a ^ b).AsFloat(),
+            LogoLexer.Or => values.Select(x => x.AsBool()).Aggregate(false, (a, b) => a || b).AsFloat(),
+
+            LogoLexer.Less => (values[0] < values[1]).AsFloat(), 
+            LogoLexer.Greater => (values[0] > values[1]).AsFloat(),
+            LogoLexer.LessEqual => (values[0] <= values[1]).AsFloat(),
+            LogoLexer.GreaterEqual => (values[0] >= values[1]).AsFloat(),
+            
+            
             LogoLexer.Sum => values.Aggregate(0f, (a, b) => a + b),
             LogoLexer.Difference => values[0] - values[1],
             LogoLexer.Minus => - values[0],
@@ -58,6 +70,16 @@ public class ExprParam : Parameter
         var values = _parameters.Select(p => p.ToString()).ToArray();
         var @params = string.Join(" ", values.Select(v => $"({v})"));
         var op = Op switch {
+            LogoLexer.True => "true",
+            LogoLexer.False => "false",
+            LogoLexer.And => "and",
+            LogoLexer.Or => "or",
+            LogoLexer.Xor => "xor",
+            
+            LogoLexer.Less => "less?",
+            LogoLexer.Greater => "greater?",
+            LogoLexer.LessEqual => "lessEqual?",
+            LogoLexer.GreaterEqual => "greaterEqual?",
             LogoLexer.Sum => "sum",
             LogoLexer.Difference => "difference",
             LogoLexer.Minus => "minus",
@@ -83,6 +105,6 @@ public class ExprParam : Parameter
             LogoLexer.Radarctan => "radarctan",
             _ => ""
         };
-        return $"({op} {@params})";
+        return @params.Length > 0 ? $"({op} {@params})" : op;
     }
 }

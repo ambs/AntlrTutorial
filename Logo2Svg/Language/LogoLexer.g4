@@ -1,24 +1,44 @@
 lexer grammar LogoLexer;
 
-RightSqBracket : ']' ;
-LeftSqBracket  : '[' ;
-MinusSign      : '-' ;
-PlusSign       : '+' ;
-AsteriskSign   : '*' ;
-SlashSigh      : '/' ;
-LeftParen      : '(' ;
-RightParen     : ')' ;
-CircunflexSign : '^' ;
-PercentSign    : '%' ;
+RightSqBracket   : ']' ;
+LeftSqBracket    : '[' ;
+MinusSign        : '-' ;
+PlusSign         : '+' ;
+AsteriskSign     : '*' ;
+SlashSigh        : '/' ;
+LeftParen        : '(' ;
+RightParen       : ')' ;
+CircunflexSign   : '^' ;
+PercentSign      : '%' ;
+LessSign         : '<' ;
+GreaterSign      : '>' ;
+LessEqualSign    : '<=' ;
+GreaterEqualSign : '>=' ;
 
 Variable    : '"' [a-zA-Z0-9_]+ { Text = Text.Substring(1); };
 VariableRef : ':' [a-zA-Z0-9_]+ { Text = Text.Substring(1); };
+
+Less         : L E S S (P | '?');
+Greater      : G R E A T E R (P | '?');
+LessEqual    : L E S S E Q U A L (P | '?');
+GreaterEqual : G R E A T E R E Q U A L (P | '?');
+
+IfElse       : I F E L S E ;
+If           : I F ;
+Bye          : B Y E ;
+Repeat       : R E P E A T ;
+Forever      : F O R E V E R ;
+
+And          : A N D ;
+Xor          : X O R ;
+Or           : O R ;
+True         : T R U E ;
+False        : F A L S E ;
 
 Make       : M A K E ;
 Name       : N A M E ;
 Thing      : T H I N G ;
 Show       : S H O W ;
-
 Minus      : M I N U S ;
 Power      : P O W E R ;
 Quotient   : Q U O T I E N T ;

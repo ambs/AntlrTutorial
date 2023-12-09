@@ -1,4 +1,3 @@
-using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using Logo2Svg.Language;
@@ -18,6 +17,9 @@ namespace Logo2Svg.AST
 
         public override INode VisitValue([NotNull] LogoParser.ValueContext context)
         {
+            if (context.True() is not null) return new ExprParam(LogoLexer.True);
+            if (context.False() is not null) return new ExprParam(LogoLexer.False);
+            
             var valueStr = (context.IntegerValue() ?? context.RealValue()).Symbol.Text;
             return new ValueParam(float.Parse(valueStr));
         }
@@ -47,15 +49,19 @@ namespace Logo2Svg.AST
         public override INode VisitBinaryOp([NotNull] LogoParser.BinaryOpContext context)
         {
             var parcels = context.expr().Select(Visit<Parameter>);
-            var op = context.op.Text switch
+            var op = context.op.Type switch
             {
-                "^" => LogoLexer.Power,
-                "+" => LogoLexer.Sum,
-                "-" => LogoLexer.Difference,
-                "*" => LogoLexer.Product,
-                "/" => LogoLexer.Quotient,
-                "%" => LogoLexer.Remainder,
-                _ => throw new ArgumentOutOfRangeException()
+                LogoLexer.CircunflexSign => LogoLexer.Power,
+                LogoLexer.PlusSign => LogoLexer.Sum,
+                LogoLexer.MinusSign => LogoLexer.Difference,
+                LogoLexer.AsteriskSign => LogoLexer.Product,
+                LogoLexer.SlashSigh => LogoLexer.Quotient,
+                LogoLexer.PercentSign => LogoLexer.Remainder,
+                LogoLexer.LessSign => LogoLexer.Less,
+                LogoLexer.GreaterSign => LogoLexer.Greater,
+                LogoLexer.LessEqualSign => LogoLexer.LessEqual,
+                LogoLexer.GreaterEqualSign => LogoLexer.GreaterEqual,
+                _ => context.op.Type 
             };
             return new ExprParam(op, parcels.ToArray());
         }
@@ -66,11 +72,9 @@ namespace Logo2Svg.AST
             return new ExprParam(LogoLexer.Minus, sub);
         }
         
-        public override INode VisitHome([NotNull] LogoParser.HomeContext context)
-        {
-            return new Command(LogoLexer.Home, "Home");
-        }
-
+        public override INode VisitAtomicCmd([NotNull] LogoParser.AtomicCmdContext context)
+            => new Command(context.cmd.Type, context.cmd.Text);
+   
         public override INode VisitSetPosition(LogoParser.SetPositionContext context)
         {
             var (command, param) = context.SetXY() is { } setXyCtx?
@@ -82,15 +86,28 @@ namespace Logo2Svg.AST
 
         public override INode VisitArc(LogoParser.ArcContext context)
         {
-            var parameters = context.expr().Select(Visit<Parameter>).ToArray();
+            var parameters = context.expr().Select(Visit).ToArray();
             return new Command(LogoLexer.Arc, "Arc", parameters);
         }
 
+        public override INode VisitRepeatStmt(LogoParser.RepeatStmtContext context)
+            => new Command(LogoLexer.Repeat, "Repeat",
+                Visit(context.expr()),
+                Visit(context.cmdBlock()));
+
+        public override INode VisitForeverStmt(LogoParser.ForeverStmtContext context)
+            => new Command(LogoLexer.Forever, "Forever", Visit(context.cmdBlock()));
+        
+        public override INode VisitCmdBlock(LogoParser.CmdBlockContext context)
+            => new CommandBlock(context.command().Select(Visit<Command>));
+
         public override INode VisitProgram([NotNull] LogoParser.ProgramContext context)
+            => new Program(context.command().Select(Visit<Command>));
+
+        public override INode VisitBoolean([NotNull] LogoParser.BooleanContext context)
         {
-            Program program = new();
-            program.AddRange(context.command().Select(Visit<Command>).ToList());
-            return program;
+            var parcels = context.expr().Select(Visit<Parameter>);
+            return new ExprParam(context.cmd.Type, parcels.ToArray());
         }
 
         public override INode VisitSummation([NotNull] LogoParser.SummationContext context)
@@ -130,9 +147,15 @@ namespace Logo2Svg.AST
         }
 
         public override INode VisitShow(LogoParser.ShowContext context)
-        => new Command(LogoLexer.Show, "show", Visit<Parameter>(context.expr()));
-        
+            => new Command(LogoLexer.Show, "show", Visit<Parameter>(context.expr()));
 
-        public T Visit<T>(IParseTree tree) => (T)Visit(tree);
+        public override INode VisitIfStmt(LogoParser.IfStmtContext context)
+            => new Command(LogoLexer.If, "if", Visit(context.expr()), Visit(context.cmdBlock()));
+        
+        public override INode VisitIfElseStmt(LogoParser.IfElseStmtContext context)
+            => new Command(LogoLexer.IfElse, "ifElse",
+                Visit(context.expr()), Visit(context.cmdBlock(0)), Visit(context.cmdBlock(1)));
+        
+        public T Visit<T>(IParseTree tree) => (T) Visit(tree);
     }
 }

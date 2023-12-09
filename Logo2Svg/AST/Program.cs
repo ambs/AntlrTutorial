@@ -1,12 +1,11 @@
 namespace Logo2Svg.AST
 {
-    public class Program : List<Command>, INode
+    public class Program : CommandBlock
     {
-        public void Execute(Turtle turtle)
+        public Program(IEnumerable<Command> cmdLst) : base(cmdLst)
         {
-            ForEach(cmd => cmd.Execute(turtle));
         }
-
+        
         public override string ToString() => string.Join("\n", this);
     }
 }

@@ -66,7 +66,7 @@ public class Turtle
     
     public void Reset()
     {
-        Position = new Point(100, 100);
+        Position = new Point(0, 0);
         Rotation = MathF.PI / 2f;
     }
 

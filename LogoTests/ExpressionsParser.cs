@@ -59,7 +59,6 @@ public class ExpressionsParser
     [DataRow("radarctan 180", 1.2626f, 0.001f)]
     [DataRow("(arctan 3.1415 3.1415)", MathF.PI / 4f, 0.001f)]
     [DataRow("(radarctan 180 180)", MathF.PI / 4f, 0.001f)]
-    
     [DataRow("1 < 2", 1f)]
     [DataRow("2 < 1", 0f)]
     [DataRow("lessp 1 2", 1f)]
@@ -80,7 +79,6 @@ public class ExpressionsParser
     [DataRow("lessequalp 1 2", 1f)]
     [DataRow("lessequal? 2 1", 0f)]
     [DataRow("lessequalp 2 2", 1f)]
-    
     [DataRow("1 and 1", 1f)]
     [DataRow("1 and 0", 0f)]
     [DataRow("0 or 1", 1f)]
@@ -99,7 +97,6 @@ public class ExpressionsParser
             Assert.AreEqual(value, result, $"Correctly parse of {expr}");
     }
 
-    
     [TestMethod]
     [DataRow("2 * 3 + 4", 10f)]
     [DataRow("4 + 3 * 2", 10f)]
@@ -107,7 +104,6 @@ public class ExpressionsParser
     [DataRow("3 ^ 2 + 2", 11f)]
     [DataRow("3 ^ 2 ^ 3", 6561f)]
     [DataRow(" 3 * - 2", -6f)]
-    
     [DataRow("2 + 2 >= 4", 1f)]
     [DataRow("2 + 2 <= 2", 0f)]
     public void Priorities(string expr, float value)
@@ -170,7 +166,6 @@ public class ExpressionsParser
     [DataRow("3 ^ 2 + 2", "(sum ((power (3) (2))) (2))")]
     [DataRow("3 ^ 2 ^ 3", "(power (3) ((power (2) (3))))")]
     [DataRow(" 3 * - 2", "(product (3) ((minus (2))))")]
-    
     [DataRow("1 < 2", "(less? (1) (2))")]
     [DataRow("lessp 1 2", "(less? (1) (2))")]
     [DataRow("less? 2 1", "(less? (2) (1))")]
@@ -183,13 +178,11 @@ public class ExpressionsParser
     [DataRow("1 <= 2", "(lessEqual? (1) (2))")]
     [DataRow("lessequal? 2 1", "(lessEqual? (2) (1))")]
     [DataRow("lessequalp 2 2", "(lessEqual? (2) (2))")]
-    
     [DataRow("1 and 1", "(and (1) (1))")]
     [DataRow("0 or 1", "(or (0) (1))")]
     [DataRow("1 xor 1", "(xor (1) (1))")]
     [DataRow("(and 1 2 > 1 3 > 1)", "(and (1) ((greater? (2) (1))) ((greater? (3) (1))))")]
     [DataRow("(or false true)", "(or (false) (true))")]
-
     public void Stringification(string expr, string expected)
     {
         var param = expr.ToParameter();

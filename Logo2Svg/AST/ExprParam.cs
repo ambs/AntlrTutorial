@@ -22,15 +22,15 @@ public class ExprParam : Parameter
         {
             LogoLexer.True => true.AsFloat(),
             LogoLexer.False => false.AsFloat(),
-            
+            LogoLexer.And => values.Select(x => x.AsBool()).Aggregate(true, (a, b) => a && b).AsFloat(),
+            LogoLexer.Xor => values.Select(x => x.AsBool()).Aggregate(false, (a, b) => a ^ b).AsFloat(),
+            LogoLexer.Or => values.Select(x => x.AsBool()).Aggregate(false, (a, b) => a || b).AsFloat(),
+
             LogoLexer.Less => (values[0] < values[1]).AsFloat(), 
             LogoLexer.Greater => (values[0] > values[1]).AsFloat(),
             LogoLexer.LessEqual => (values[0] <= values[1]).AsFloat(),
             LogoLexer.GreaterEqual => (values[0] >= values[1]).AsFloat(),
             
-            LogoLexer.And => values.Select(x => x.AsBool()).Aggregate(true, (a, b) => a && b).AsFloat(),
-            LogoLexer.Xor => values.Select(x => x.AsBool()).Aggregate(false, (a, b) => a ^ b).AsFloat(),
-            LogoLexer.Or => values.Select(x => x.AsBool()).Aggregate(false, (a, b) => a || b).AsFloat(),
             
             LogoLexer.Sum => values.Aggregate(0f, (a, b) => a + b),
             LogoLexer.Difference => values[0] - values[1],
@@ -72,16 +72,14 @@ public class ExprParam : Parameter
         var op = Op switch {
             LogoLexer.True => "true",
             LogoLexer.False => "false",
+            LogoLexer.And => "and",
+            LogoLexer.Or => "or",
+            LogoLexer.Xor => "xor",
             
             LogoLexer.Less => "less?",
             LogoLexer.Greater => "greater?",
             LogoLexer.LessEqual => "lessEqual?",
             LogoLexer.GreaterEqual => "greaterEqual?",
-            
-            LogoLexer.And => "and",
-            LogoLexer.Or => "or",
-            LogoLexer.Xor => "xor",
-            
             LogoLexer.Sum => "sum",
             LogoLexer.Difference => "difference",
             LogoLexer.Minus => "minus",

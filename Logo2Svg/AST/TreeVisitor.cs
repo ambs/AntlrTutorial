@@ -17,8 +17,8 @@ namespace Logo2Svg.AST
 
         public override INode VisitValue([NotNull] LogoParser.ValueContext context)
         {
-            if (context.True() is not null) return new ValueParam(1f);
-            if (context.False() is not null) return new ValueParam(0f);
+            if (context.True() is not null) return new ExprParam(LogoLexer.True);
+            if (context.False() is not null) return new ExprParam(LogoLexer.False);
             
             var valueStr = (context.IntegerValue() ?? context.RealValue()).Symbol.Text;
             return new ValueParam(float.Parse(valueStr));
@@ -153,9 +153,9 @@ namespace Logo2Svg.AST
             => new Command(LogoLexer.If, "if", Visit(context.expr()), Visit(context.cmdBlock()));
         
         public override INode VisitIfElseStmt(LogoParser.IfElseStmtContext context)
-            => new Command(LogoLexer.If, "ifElse",
+            => new Command(LogoLexer.IfElse, "ifElse",
                 Visit(context.expr()), Visit(context.cmdBlock(0)), Visit(context.cmdBlock(1)));
         
-        public T Visit<T>(IParseTree tree) => (T)Visit(tree);
+        public T Visit<T>(IParseTree tree) => (T) Visit(tree);
     }
 }

@@ -170,6 +170,26 @@ public class ExpressionsParser
     [DataRow("3 ^ 2 + 2", "(sum ((power (3) (2))) (2))")]
     [DataRow("3 ^ 2 ^ 3", "(power (3) ((power (2) (3))))")]
     [DataRow(" 3 * - 2", "(product (3) ((minus (2))))")]
+    
+    [DataRow("1 < 2", "(less? (1) (2))")]
+    [DataRow("lessp 1 2", "(less? (1) (2))")]
+    [DataRow("less? 2 1", "(less? (2) (1))")]
+    [DataRow("1 > 2", "(greater? (1) (2))")]
+    [DataRow("greaterp 1 2", "(greater? (1) (2))")]
+    [DataRow("greater? 2 1", "(greater? (2) (1))")]
+    [DataRow("1 >= 2", "(greaterEqual? (1) (2))")]
+    [DataRow("greaterequalp 1 2", "(greaterEqual? (1) (2))")]
+    [DataRow("greaterequalp 2 2", "(greaterEqual? (2) (2))")]
+    [DataRow("1 <= 2", "(lessEqual? (1) (2))")]
+    [DataRow("lessequal? 2 1", "(lessEqual? (2) (1))")]
+    [DataRow("lessequalp 2 2", "(lessEqual? (2) (2))")]
+    
+    [DataRow("1 and 1", "(and (1) (1))")]
+    [DataRow("0 or 1", "(or (0) (1))")]
+    [DataRow("1 xor 1", "(xor (1) (1))")]
+    [DataRow("(and 1 2 > 1 3 > 1)", "(and (1) ((greater? (2) (1))) ((greater? (3) (1))))")]
+    [DataRow("(or false true)", "(or (false) (true))")]
+
     public void Stringification(string expr, string expected)
     {
         var param = expr.ToParameter();
@@ -189,5 +209,25 @@ public class ExpressionsParser
         Assert.AreEqual(20, val2);
         Assert.IsTrue(turtle.RetrieveVariable("c", out var val3));
         Assert.AreEqual(30, val3);
+    }
+    
+    [TestMethod]
+    public void IfTest()
+    {
+        var tree = @"MAKE ""a 10 
+                          If :a > 15 [ MAKE ""a 15 ]
+                          If [ true ] [ MAKE ""b 69 ]
+                          IfElse [ :b >= 69 ] [ MAKE ""c 0 ] [ MAKE ""c 1 ]
+                          IfElse [ :b < 69 ] [ MAKE ""d 0 ] [ MAKE ""d 1 ]".ToAst();
+        var turtle = new Turtle();
+        tree.Execute(turtle);
+        Assert.IsTrue(turtle.RetrieveVariable("a", out var val1));
+        Assert.AreEqual(10, val1);
+        Assert.IsTrue(turtle.RetrieveVariable("b", out var val2));
+        Assert.AreEqual(69, val2);
+        Assert.IsTrue(turtle.RetrieveVariable("c", out var val3));
+        Assert.AreEqual(0, val3);
+        Assert.IsTrue(turtle.RetrieveVariable("d", out var val4));
+        Assert.AreEqual(1, val4);
     }
 }

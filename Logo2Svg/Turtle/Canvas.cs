@@ -1,7 +1,15 @@
 namespace Logo2Svg.SVG;
 
+/// <summary>
+/// The drawable canvas. Consists of a list of drawable elements.
+/// Supports all the <c>List</c> methods.
+/// </summary>
 public class Canvas : List<IDrawable>
 {
+    /// <summary>
+    /// Converts the canvas to a string in SVG format.
+    /// </summary>
+    /// <returns>The content of a SVG file with the canvas contents.</returns>
     public override string ToString()
     {
         var min = new Point(0, 0);

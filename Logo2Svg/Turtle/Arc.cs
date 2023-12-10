@@ -1,5 +1,8 @@
 namespace Logo2Svg.SVG;
 
+/// <summary>
+/// A drawable arc.
+/// </summary>
 public class Arc : IDrawable
 {
     private Point _center;
@@ -8,6 +11,14 @@ public class Arc : IDrawable
     private readonly float _radius;
     private readonly float _angle;
 
+    /// <summary>
+    /// The constructor for an Arc.
+    /// </summary>
+    /// <param name="center">Point referring to the center of the arc.</param>
+    /// <param name="facing">Current angle the turtle is pointing to.</param>
+    /// <param name="radius">The radius of the arc.</param>
+    /// <param name="angle">The size of the arc: angle to be drawn.</param>
+    /// <param name="colour">Colour of the line.</param>
     public Arc(Point center, float facing, float radius, float angle, Colour colour)
     {
         _center = center;
@@ -17,6 +28,10 @@ public class Arc : IDrawable
         _colour = colour;
     }
 
+    /// <summary>
+    /// Computes the points to draw the arc.
+    /// </summary>
+    /// <returns>A list of points.</returns>
     private List<Point> ComputePoints()
     {
         List<Point> pts = new();
@@ -27,9 +42,18 @@ public class Arc : IDrawable
         return pts;
     }
     
+    /// <summary>
+    /// Computes a specific point of the arc given an angle.
+    /// </summary>
+    /// <param name="angle">The requested angle.</param>
+    /// <returns>The computed point.</returns>
     private Point ComputePoint(float angle)
         => new(_center.X + MathF.Cos(angle) * _radius, _center.Y - MathF.Sin(angle) * _radius);
     
+    /// <summary>
+    /// Returns a string representation of the arc in SVG.
+    /// </summary>
+    /// <returns>The SVG element representing the arc.</returns>
     public override string ToString()
     {
         var points = ComputePoints();
@@ -40,6 +64,11 @@ public class Arc : IDrawable
         return @$"<path fill=""none"" style=""stroke:{_colour}"" d=""M {path}""/>";
     }
 
+    /// <summary>
+    /// Implementation of the <see>IDrawable</see> method <c>MinMaxCoordinates</c>.
+    /// Computes a tuple of two points referring the minimum and maximum points used by the arc.
+    /// </summary>
+    /// <returns>A tuple with the two computed coordinates.</returns>
     public (Point, Point) MinMaxCoordinates()
     {
         var points = ComputePoints();
@@ -55,8 +84,10 @@ public class Arc : IDrawable
         return (min, max);
     }
 
-    public void Displace(Point displacement)
-    {
-        _center += displacement;
-    }
+    /// <summary>
+    /// Implementation of the <see>IDrawable</see> method <c>Displace</c>.
+    /// Moves the arc accordingly with the referred displacement.
+    /// </summary>
+    /// <param name="displacement">Amount of displacement.</param>
+    public void Displace(Point displacement) => _center += displacement;
 }

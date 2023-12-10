@@ -131,7 +131,6 @@ namespace Logo2Svg.AST
                     break;
                 }
 
-                
                 default:
                     throw new Exception($"Unknown command: {Id}-{Name}");
             }

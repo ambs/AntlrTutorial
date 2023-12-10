@@ -1,11 +1,19 @@
-namespace Logo2Svg.AST
+namespace Logo2Svg.AST;
+
+/// <summary>
+/// Represents the top level of the LOGO AST.
+/// </summary>
+public class Program : CommandBlock
 {
-    public class Program : CommandBlock
-    {
-        public Program(IEnumerable<Command> cmdLst) : base(cmdLst)
-        {
-        }
-        
-        public override string ToString() => string.Join("\n", this);
-    }
+    /// <summary>
+    /// Constructor, given a list of commands.
+    /// </summary>
+    /// <param name="cmdLst">The list of commands to add to the program.</param>
+    public Program(IEnumerable<Command> cmdLst) : base(cmdLst) { }
+    
+    /// <summary>
+    /// Stringification of a program.
+    /// </summary>
+    /// <returns>The stringification of the program.</returns>
+    public override string ToString() => string.Join("\n", this);
 }

@@ -3,18 +3,39 @@ using Logo2Svg.Language;
 
 namespace Logo2Svg.AST;
 
+/// <summary>
+/// Represents an expression node in the AST.
+/// </summary>
 public class ExprParam : Parameter
 {
+    /// <summary>
+    /// The operator ID (borrowed from the LogoLexer token ID).
+    /// </summary>
     public readonly int Op;
-    private readonly List<Parameter> _parameters;
+    
+    /// <summary>
+    /// The list of expression operands.
+    /// </summary>
     public ReadOnlyCollection<Parameter> Parameters => _parameters.AsReadOnly();
-
+    private readonly List<Parameter> _parameters;
+    
+    /// <summary>
+    /// Expression constructor.
+    /// </summary>
+    /// <param name="op">The ID of the operator.</param>
+    /// <param name="parameters">The list of operands.</param>
     public ExprParam(int op, params Parameter[] parameters)
     {
         Op = op;
         _parameters = new List<Parameter>(parameters);
     }
 
+    /// <summary>
+    /// Evaluates the expression, returning its evaluated value (a float).
+    /// </summary>
+    /// <param name="turtle">The turtle information.</param>
+    /// <returns>The result of evaluating the expression.</returns>
+    /// <exception cref="DivideByZeroException">Thrown on division by zero.</exception>
     public override float Value(Turtle turtle)
     {
         var values = _parameters.Select(p => p.Value(turtle)).ToArray();
@@ -25,13 +46,10 @@ public class ExprParam : Parameter
             LogoLexer.And => values.Select(x => x.AsBool()).Aggregate(true, (a, b) => a && b).AsFloat(),
             LogoLexer.Xor => values.Select(x => x.AsBool()).Aggregate(false, (a, b) => a ^ b).AsFloat(),
             LogoLexer.Or => values.Select(x => x.AsBool()).Aggregate(false, (a, b) => a || b).AsFloat(),
-
             LogoLexer.Less => (values[0] < values[1]).AsFloat(), 
             LogoLexer.Greater => (values[0] > values[1]).AsFloat(),
             LogoLexer.LessEqual => (values[0] <= values[1]).AsFloat(),
             LogoLexer.GreaterEqual => (values[0] >= values[1]).AsFloat(),
-            
-            
             LogoLexer.Sum => values.Aggregate(0f, (a, b) => a + b),
             LogoLexer.Difference => values[0] - values[1],
             LogoLexer.Minus => - values[0],
@@ -65,6 +83,10 @@ public class ExprParam : Parameter
         };
     }
 
+    /// <summary>
+    /// Stringification of the expression in a syntax similar to LOGO.
+    /// </summary>
+    /// <returns>The resulting string.</returns>
     public override string ToString()
     {
         var values = _parameters.Select(p => p.ToString()).ToArray();
@@ -75,7 +97,6 @@ public class ExprParam : Parameter
             LogoLexer.And => "and",
             LogoLexer.Or => "or",
             LogoLexer.Xor => "xor",
-            
             LogoLexer.Less => "less?",
             LogoLexer.Greater => "greater?",
             LogoLexer.LessEqual => "lessEqual?",

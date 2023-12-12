@@ -17,7 +17,7 @@ GreaterEqualSign : '>=' ;
 
 Variable    : '"' [a-zA-Z0-9_]+ { Text = Text.Substring(1); };
 VariableRef : ':' [a-zA-Z0-9_]+ { Text = Text.Substring(1); };
-
+ 
 PenDown      : P D | P E N D O W N ;
 PenUp        : P U | P E N U P ;
 SetPenColor  : S E T P E N C O L O R ;

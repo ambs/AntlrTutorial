@@ -18,23 +18,26 @@ GreaterEqualSign : '>=' ;
 Variable    : '"' [a-zA-Z0-9_]+ { Text = Text.Substring(1); };
 VariableRef : ':' [a-zA-Z0-9_]+ { Text = Text.Substring(1); };
 
+PenDown      : P D | P E N D O W N ;
+PenUp        : P U | P E N U P ;
+SetPenColor  : S E T P E N C O L O R ;
+SetPalette   : S E T P A L E T T E ;
+SetPenSize   : S E T P E N S I Z E ;
+
 Less         : L E S S (P | '?');
 Greater      : G R E A T E R (P | '?');
 LessEqual    : L E S S E Q U A L (P | '?');
 GreaterEqual : G R E A T E R E Q U A L (P | '?');
-
 IfElse       : I F E L S E ;
 If           : I F ;
 Bye          : B Y E ;
 Repeat       : R E P E A T ;
 Forever      : F O R E V E R ;
-
 And          : A N D ;
 Xor          : X O R ;
 Or           : O R ;
 True         : T R U E ;
 False        : F A L S E ;
-
 Make       : M A K E ;
 Name       : N A M E ;
 Thing      : T H I N G ;

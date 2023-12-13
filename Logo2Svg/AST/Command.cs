@@ -70,6 +70,48 @@ public class Command : INode
     {
         switch (Id)
         {
+            case LogoLexer.SetPenColor:
+            {
+                var colour = Parameter<INode>(0);
+                switch (colour)
+                {
+                    case ColourNode colourNode:
+                        turtle.Colour = colourNode.Colour(turtle);
+                        break;
+                    case ExprParam colourIndex:
+                        var pos = (int) colourIndex.Value(turtle);
+                        if (pos is < 0 or > 15) throw new IndexOutOfRangeException();
+                        turtle.Colour = Colour.Palette[pos];
+                        break;
+                    case VarName colourName:
+                        turtle.Colour = new ColourNode(colourName.Name).Colour(turtle);
+                        break;
+                    default:
+                        throw new Exception("wrong parameter type to SetPenColor");
+                }
+                break;
+            }
+            case LogoLexer.SetPalette:
+            {
+                var pos = (int) Parameter(0).Value(turtle);
+                var colour = Parameter<INode>(1);
+                switch (colour)
+                {
+                    case ColourNode colourNode:
+                        if (pos is < 0 or > 15) throw new IndexOutOfRangeException();
+                        Colour.Palette[pos] = colourNode.Colour(turtle);
+                        break;
+                    case VarName namedColour:
+                        Colour.Palette[pos] = new ColourNode(namedColour.Name).Colour(turtle);
+                        break;
+                    default:
+                        throw new Exception("Invalid parameter type to SetPalette");
+                }
+                break;
+            }
+            case LogoLexer.SetPenSize:
+                turtle.Width = (int) Parameter(0).Value(turtle);
+                break;
             case LogoLexer.If:
             {
                 var condition = Parameter(0).Value(turtle).AsBool();

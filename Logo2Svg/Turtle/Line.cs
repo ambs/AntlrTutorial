@@ -7,6 +7,7 @@ public class Line : IDrawable
 {
     private Point _pt1, _pt2;
     private readonly Colour _colour;
+    private readonly int _width;
 
     /// <summary>
     /// Constructor, given two points and a colour.
@@ -14,11 +15,13 @@ public class Line : IDrawable
     /// <param name="pt1">Source point.</param>
     /// <param name="pt2">Target point.</param>
     /// <param name="colour">Line colour.</param>
-    public Line(Point pt1, Point pt2, Colour colour)
+    /// <param name="width">Line width.</param>
+    public Line(Point pt1, Point pt2, Colour colour, int width)
     {
         _pt1 = pt1;
         _pt2 = pt2;
         _colour = colour;
+        _width = width;
     }
 
     /// <summary>
@@ -27,7 +30,7 @@ public class Line : IDrawable
     /// <returns>SVG element representing the line.</returns>
     public override string ToString()
     {
-        var style = $"stroke:{_colour}; stroke-width:1";
+        var style = $"stroke:{_colour}; stroke-width:{_width}";
         return $@"<line x1=""{_pt1.X}"" y1=""{_pt1.Y}"" x2=""{_pt2.X}"" y2=""{_pt2.Y}"" style=""{style}""/>";
     }
 

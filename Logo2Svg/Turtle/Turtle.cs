@@ -74,7 +74,7 @@ public class Turtle
     /// <param name="from">The source point.</param>
     /// <param name="to">The target point.</param>
     public void AddLine(Point from, Point to)
-        => _canvas.Add(new Line(from, to, Colour));
+        => _canvas.Add(new Line(from, to, Colour, Width));
     
     /// <summary>
     /// Adds an Arc to the turtle canvas
@@ -84,9 +84,8 @@ public class Turtle
     /// <param name="radius">The radius of the arc.</param>
     /// <param name="angle">The length of the arc (in degrees).</param>
     public void AddArc(Point turtlePosition, float turtleAngle, float radius, float angle)
-        => _canvas.Add(new Arc(turtlePosition, turtleAngle, radius, angle, Colour));
+        => _canvas.Add(new Arc(turtlePosition, turtleAngle, radius, angle, Colour, Width));
     
-
     /// <summary>
     /// Saves the turtle canvas in a file.
     /// </summary>

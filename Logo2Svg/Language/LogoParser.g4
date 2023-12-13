@@ -15,12 +15,12 @@ command : (simpleCommand | colorCmd | controlStmt)   #basicCommand
         | Show expr                                  #show
         ;
 
-colorList : '[' expr expr expr ']' 
-          ;
+colourList : '[' expr expr expr ']' 
+           ;
         
-colorCmd : SetPenColor ( expr | Variable | colorList )    #setPenColor
-         | SetPalette expr ( Variable | colorList)        #setPalette
-         | SetPenSize expr                                #setPenSize
+colorCmd : SetPenColor ( expr | Variable | colourList )    #setPenColor
+         | SetPalette expr ( Variable | colourList)        #setPalette
+         | SetPenSize expr                                 #setPenSize
          ; 
         
 cmdBlock : '[' command+ ']'

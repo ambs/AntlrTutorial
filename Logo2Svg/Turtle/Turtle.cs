@@ -25,6 +25,11 @@ public class Turtle
     public bool IsExiting { get; private set; }
 
     /// <summary>
+    /// Defines is the turtle is drawing.
+    /// </summary>
+    public bool IsDrawing;
+    
+    /// <summary>
     /// Rotation of the turtle (angle it is facing to)
     /// </summary>
     public float Rotation

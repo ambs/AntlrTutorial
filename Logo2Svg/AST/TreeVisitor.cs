@@ -257,4 +257,15 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
     public override INode VisitIfElseStmt(LogoParser.IfElseStmtContext context)
         => new Command(LogoLexer.IfElse, "ifElse",
             Visit(context.expr()), Visit(context.cmdBlock(0)), Visit(context.cmdBlock(1)));
+    
+    /// <summary>
+    /// Visitor for the <c>ColourList</c> production.
+    /// </summary>
+    /// <param name="context">Production context.</param>
+    /// <returns>A new ColourNode object.</returns>
+    public override INode VisitColourList(LogoParser.ColourListContext context)
+    {
+        var rgb = context.expr().Select(Visit<ExprParam>).ToList();
+        return new ColourNode(rgb[0], rgb[1], rgb[2]);
+    }
 }

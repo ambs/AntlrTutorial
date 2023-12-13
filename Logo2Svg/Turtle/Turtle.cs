@@ -10,9 +10,14 @@ public class Turtle
     public Point Position;
     
     /// <summary>
-    /// Current turtle drawing color.
+    /// Current turtle drawing colour.
     /// </summary>
     public Colour Colour = new(255, 0, 0);
+
+    /// <summary>
+    /// Current turtle line width.
+    /// </summary>
+    public int Width = 1; 
 
     /// <summary>
     /// Constant used to convert degrees into radians. 

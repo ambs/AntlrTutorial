@@ -10,9 +10,14 @@ public class Turtle
     public Point Position;
     
     /// <summary>
-    /// Current turtle drawing color.
+    /// Current turtle drawing colour.
     /// </summary>
     public Colour Colour = new(255, 0, 0);
+
+    /// <summary>
+    /// Current turtle line width.
+    /// </summary>
+    public int Width = 1; 
 
     /// <summary>
     /// Constant used to convert degrees into radians. 
@@ -24,6 +29,11 @@ public class Turtle
     /// </summary>
     public bool IsExiting { get; private set; }
 
+    /// <summary>
+    /// Defines is the turtle is drawing.
+    /// </summary>
+    public bool IsDrawing = true;
+    
     /// <summary>
     /// Rotation of the turtle (angle it is facing to)
     /// </summary>
@@ -64,7 +74,7 @@ public class Turtle
     /// <param name="from">The source point.</param>
     /// <param name="to">The target point.</param>
     public void AddLine(Point from, Point to)
-        => _canvas.Add(new Line(from, to, Colour));
+        => _canvas.Add(new Line(from, to, Colour, Width));
     
     /// <summary>
     /// Adds an Arc to the turtle canvas
@@ -74,9 +84,8 @@ public class Turtle
     /// <param name="radius">The radius of the arc.</param>
     /// <param name="angle">The length of the arc (in degrees).</param>
     public void AddArc(Point turtlePosition, float turtleAngle, float radius, float angle)
-        => _canvas.Add(new Arc(turtlePosition, turtleAngle, radius, angle, Colour));
+        => _canvas.Add(new Arc(turtlePosition, turtleAngle, radius, angle, Colour, Width));
     
-
     /// <summary>
     /// Saves the turtle canvas in a file.
     /// </summary>

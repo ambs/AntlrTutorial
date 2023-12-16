@@ -70,6 +70,26 @@ public class Command : INode
     {
         switch (Id)
         {
+            case LogoLexer.SetPenColor:
+                turtle.Colour = Parameter<ColourNode>(0).Colour(turtle);
+                break;
+            case LogoLexer.SetPalette:
+            {
+                var pos = (int) Parameter(0).Value(turtle);
+                if (pos is < 0 or > 15) throw new IndexOutOfRangeException();
+                Colour.Palette[pos] = Parameter<ColourNode>(1).Colour(turtle);
+                break;
+            }
+            case LogoLexer.PenDown:
+                turtle.IsDrawing = true;
+                break;
+            case LogoLexer.PenUp:
+                turtle.IsDrawing = false;
+                break;
+            
+            case LogoLexer.SetPenSize:
+                turtle.Width = (int) Parameter(0).Value(turtle);
+                break;
             case LogoLexer.If:
             {
                 var condition = Parameter(0).Value(turtle).AsBool();
@@ -113,7 +133,7 @@ public class Command : INode
                 var pos = turtle.Position;
                 var target = new Point(pos.X + MathF.Cos(turtle.Rotation) * value,
                     pos.Y - MathF.Sin(turtle.Rotation) * value);
-                turtle.AddLine(pos, target);
+                if (turtle.IsDrawing) turtle.AddLine(pos, target);
                 turtle.Position = target;
                 break;
             }
@@ -123,7 +143,7 @@ public class Command : INode
                 var pos = turtle.Position;
                 var target = new Point(pos.X + MathF.Cos(turtle.Rotation) * value,
                     pos.Y + MathF.Sin(turtle.Rotation) * value);
-                turtle.AddLine(pos, target);
+                if (turtle.IsDrawing) turtle.AddLine(pos, target);
                 turtle.Position = target;
                 break;
             }
@@ -143,29 +163,45 @@ public class Command : INode
             case LogoLexer.Home:
                 turtle.Reset();
                 break;
+            
             case LogoLexer.SetXY:
             case LogoLexer.SetPos:
-                turtle.Position = Parameter<PointParam>(0).Point(turtle);
+            {
+                var target = Parameter<PointParam>(0).Point(turtle);
+                if (turtle.IsDrawing) turtle.AddLine(turtle.Position, target);
+                turtle.Position = target;
                 break;
+            }
 
             case LogoLexer.SetX:
-                turtle.Position.X = Parameter(0).Value(turtle);
+            {
+                var target = turtle.Position.Clone();
+                target.X = Parameter(0).Value(turtle);
+                if (turtle.IsDrawing) turtle.AddLine(turtle.Position, target);
+                turtle.Position = target;
                 break;
+            }
             case LogoLexer.SetY:
-                turtle.Position.Y = Parameter(0).Value(turtle);
+            {
+                var target = turtle.Position.Clone();
+                target.Y = Parameter(0).Value(turtle);
+                if (turtle.IsDrawing) turtle.AddLine(turtle.Position, target);
+                turtle.Position = target;
                 break;
+            }
             case LogoLexer.SetH:
                 turtle.Rotation = Parameter(0).Value(turtle);
                 break;
 
             case LogoLexer.Arc:
-            {
-                var angle = Parameter(0).Value(turtle) * Turtle.ToRadians;
-                var radius = Parameter(1).Value(turtle);
-                turtle.AddArc(turtle.Position, turtle.Rotation, radius, angle);
+                if (turtle.IsDrawing)
+                {
+                    var angle = Parameter(0).Value(turtle) * Turtle.ToRadians;
+                    var radius = Parameter(1).Value(turtle);
+                    turtle.AddArc(turtle.Position, turtle.Rotation, radius, angle);
+                }
                 break;
-            }
-
+            
             default:
                 throw new Exception($"Unknown command: {Id}-{Name}");
         }

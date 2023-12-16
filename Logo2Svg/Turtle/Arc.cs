@@ -10,6 +10,7 @@ public class Arc : IDrawable
     private readonly float _facing;
     private readonly float _radius;
     private readonly float _angle;
+    private readonly int _width;
 
     /// <summary>
     /// The constructor for an Arc.
@@ -19,13 +20,15 @@ public class Arc : IDrawable
     /// <param name="radius">The radius of the arc.</param>
     /// <param name="angle">The size of the arc: angle to be drawn.</param>
     /// <param name="colour">Colour of the line.</param>
-    public Arc(Point center, float facing, float radius, float angle, Colour colour)
+    /// <param name="width">Width of the line.</param>
+    public Arc(Point center, float facing, float radius, float angle, Colour colour, int width)
     {
         _center = center;
         _facing = facing;
         _radius = radius;
         _angle = angle;
         _colour = colour;
+        _width = width;
     }
 
     /// <summary>
@@ -61,7 +64,7 @@ public class Arc : IDrawable
         
         var path = $"{first.X} {first.Y}";
         path = points.Skip(1).Aggregate(path, (current, pt) => current + $" L {pt.X} {pt.Y}");
-        return @$"<path fill=""none"" style=""stroke:{_colour}"" d=""M {path}""/>";
+        return @$"<path fill=""none"" style=""stroke:{_colour}; stroke-width:{_width}"" d=""M {path}""/>";
     }
 
     /// <summary>

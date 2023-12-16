@@ -5,16 +5,23 @@ options { tokenVocab=LogoLexer; }
 program : command+ EOF
         ;
 
-command : simpleCommand          #basicCommand
-        | SetPos squarePoint     #setPosition
-        | SetXY simplePoint      #setPosition
-        | cmd=(Home|Bye)         #atomicCmd
-        | Arc expr expr          #arc
-        | Make Variable expr     #setVariable
-        | Name expr Variable     #setVariable
-        | Show expr              #show
-        | controlStmt            #controlStatement      
+command : (simpleCommand | colourCmd | controlStmt)  #basicCommand
+        | SetPos squarePoint                         #setPosition
+        | SetXY simplePoint                          #setPosition
+        | cmd=(Home|Bye|PenDown|PenUp)               #atomicCmd
+        | Arc expr expr                              #arc
+        | Make Variable expr                         #setVariable
+        | Name expr Variable                         #setVariable
+        | Show expr                                  #show
         ;
+
+colourList : '[' expr expr expr ']' 
+           ;
+        
+colourCmd : SetPenColor ( expr | Variable | colourList )    #setPenColor
+          | SetPalette expr ( Variable | colourList)        #setPalette
+          | SetPenSize expr                                 #setPenSize
+          ; 
         
 cmdBlock : '[' command+ ']'
          ;        

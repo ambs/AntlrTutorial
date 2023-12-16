@@ -2,6 +2,7 @@ using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using Logo2Svg.Language;
+using Logo2Svg.SVG;
 
 namespace Logo2Svg.AST;
 
@@ -301,10 +302,10 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
     public override INode VisitSetPenColor(LogoParser.SetPenColorContext context)
     {
         INode colour = context.expr() is { } exprContext ? 
-            Visit<ExprParam>(exprContext) :
+            new ColourNode(Visit<ExprParam>(exprContext)) :
             context.colourList() is { } colourListContext ? 
                 Visit<ColourNode>(colourListContext) :
-                new VarName(context.Variable().GetText());
+                new ColourNode(new VarName(context.Variable().GetText()));
         return new Command(LogoLexer.SetPenColor, "setPenColor", colour);
     }
 }

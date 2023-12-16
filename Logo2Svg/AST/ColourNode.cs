@@ -7,8 +7,7 @@ namespace Logo2Svg.AST;
 public class ColourNode : INode
 {
     private Parameter _redExpr, _greenExpr, _blueExpr;
-    private string _name;
-    private int _red, _green, _blue;
+    private Colour _cssColour;
     private Parameter _id;
 
     public ColourNode(string possibleName)
@@ -18,14 +17,14 @@ public class ColourNode : INode
             if (!Regex.IsMatch(possibleName, "^#[0-9A-Fa-f]{6}$"))
                 throw new Exception("Invalid CSS colour");
             
-            _red = int.Parse(possibleName.Substring(1, 2), NumberStyles.HexNumber);
-            _green = int.Parse(possibleName.Substring(3, 2), NumberStyles.HexNumber);
-            _blue = int.Parse(possibleName.Substring(5, 2), NumberStyles.HexNumber);
+            var red = int.Parse(possibleName.Substring(1, 2), NumberStyles.HexNumber);
+            var green = int.Parse(possibleName.Substring(3, 2), NumberStyles.HexNumber);
+            var blue = int.Parse(possibleName.Substring(5, 2), NumberStyles.HexNumber);
+            _cssColour = new Colour(red, green, blue);
         }
         else
         {
-            _name = possibleName.ToLowerInvariant();
-            if (!SVG.Colour.ColourNames.ContainsKey(_name))
+            if (!SVG.Colour.ColourNames.TryGetValue(possibleName.ToLowerInvariant(), out _cssColour))
                 throw new Exception("Invalid CSS colour name");
         }
     }
@@ -59,7 +58,7 @@ public class ColourNode : INode
             return new Colour((int) (factor * red), (int) (factor * green), (int) (factor * blue));
         }
 
-        return _name is not null ? SVG.Colour.ColourNames[_name] : new Colour(_red, _green, _blue);
+        return _cssColour;
     }
 
     public void Execute(Turtle turtle) => throw new NotImplementedException();

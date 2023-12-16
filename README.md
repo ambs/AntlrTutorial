@@ -11,3 +11,4 @@ This is the code I wrote for my ANTLR tutorial
  - Part V: https://null.zbr.pt/antlr-tutorial-part-v/
  - Part VI: https://null.zbr.pt/antlr-tutorial-part-vi/
  - Part VII: https://null.zbr.pt/antlr-tutorial-part-vii/
+ - Part VIII: https://null.zbr.pt/antlr-tutorial-part-viii/

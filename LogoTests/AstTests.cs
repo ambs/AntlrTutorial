@@ -79,4 +79,36 @@ public class AstTests
         Assert.AreEqual(1, falseBranch.Count);
         Assert.AreEqual(LogoLexer.Make, falseBranch[0].Id);
     }
+
+    [TestMethod]
+    public void ColorPalette_CSSColor()
+    {
+        var tree = @"SetPalette 1 ""#ff00ff".ToAst() as Program;
+        Assert.IsNotNull(tree);
+        Assert.AreEqual(1, tree.Count);
+        var cmd = tree[0];
+        Assert.IsNotNull(cmd);
+        Assert.AreEqual(LogoLexer.SetPalette, cmd.Id);
+        Assert.AreEqual(2, cmd.Params.Count);
+        var position = cmd.Parameter<ValueParam>(0);
+        Assert.IsNotNull(position);
+        var colour = cmd.Parameter<VarName>(1);
+        Assert.IsNotNull(colour);
+    }
+    
+    [TestMethod]
+    public void ColorPalette_LogoColor()
+    {
+        var tree = @"SetPalette 1 [1 2 3]".ToAst() as Program;
+        Assert.IsNotNull(tree);
+        Assert.AreEqual(1, tree.Count);
+        var cmd = tree[0];
+        Assert.IsNotNull(cmd);
+        Assert.AreEqual(LogoLexer.SetPalette, cmd.Id);
+        Assert.AreEqual(2, cmd.Params.Count);
+        var position = cmd.Parameter<ValueParam>(0);
+        Assert.IsNotNull(position);
+        var colour = cmd.Parameter<ColourNode>(1);
+        Assert.IsNotNull(colour);
+    }
 }

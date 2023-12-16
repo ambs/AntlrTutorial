@@ -32,7 +32,7 @@ public class Turtle
     /// <summary>
     /// Defines is the turtle is drawing.
     /// </summary>
-    public bool IsDrawing;
+    public bool IsDrawing = true;
     
     /// <summary>
     /// Rotation of the turtle (angle it is facing to)

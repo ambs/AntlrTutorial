@@ -1,0 +1,7 @@
+make "x 0
+REPEAT 99 [
+    setpencolor [:x :x :x]
+    forward 100
+    make "x sum :x 1
+    setxy :x 0
+]

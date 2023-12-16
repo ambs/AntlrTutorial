@@ -1,0 +1,14 @@
+RT 90
+make "w 1
+make "y 1
+REPEAT 11 [
+    penDown
+    SetPensize :w
+    FD 100
+    penUp
+    setxy 0 :y * 10
+    ifElse [ :y < 6 ]
+        [ make "w :w + 1 ]
+        [ make "w :w - 1 ]
+    make "y :y + 1
+]

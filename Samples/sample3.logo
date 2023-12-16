@@ -1,0 +1,9 @@
+PU
+SETXY 50 -50
+PENDOWN
+RT 180
+REPEAT 4 [
+    FD 100
+    RT 90
+]
+

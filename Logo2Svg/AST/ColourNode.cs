@@ -6,10 +6,10 @@ namespace Logo2Svg.AST;
 
 public class ColourNode : INode
 {
-    private ExprParam _redExpr, _greenExpr, _blueExpr;
+    private Parameter _redExpr, _greenExpr, _blueExpr;
     private string _name;
     private int _red, _green, _blue;
-    private ExprParam _id;
+    private Parameter _id;
 
     public ColourNode(string possibleName)
     {
@@ -30,9 +30,9 @@ public class ColourNode : INode
         }
     }
 
-    public ColourNode(ExprParam id) => _id = id;
+    public ColourNode(Parameter id) => _id = id;
 
-    public ColourNode(ExprParam redExpr, ExprParam greenExpr, ExprParam blueExpr)
+    public ColourNode(Parameter redExpr, Parameter greenExpr, Parameter blueExpr)
     {
         _redExpr = redExpr;
         _greenExpr = greenExpr;

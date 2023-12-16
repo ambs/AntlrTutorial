@@ -23,9 +23,9 @@ public class Canvas : List<IDrawable>
             if (iMax.Y > max.Y) max.Y = iMax.Y;
         }
 
-        var displacement = min.Abs();
+        var displacement = min.Abs() + new Point(1, 1);
         ForEach(item => item.Displace(displacement));
-        max += displacement;
+        max += displacement + new Point(1, 1);
         var lines = string.Join("\n", this);
         return $@"<svg width=""{(int)max.X}"" height=""{(int)max.Y}"">{lines}</svg>";
     }

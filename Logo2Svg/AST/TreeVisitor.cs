@@ -266,7 +266,7 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
     /// <returns>A new ColourNode object.</returns>
     public override INode VisitColourList(LogoParser.ColourListContext context)
     {
-        var rgb = context.expr().Select(Visit<ExprParam>).ToList();
+        var rgb = context.expr().Select(Visit<Parameter>).ToList();
         return new ColourNode(rgb[0], rgb[1], rgb[2]);
     }
 
@@ -277,7 +277,7 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
     /// <returns>The respective command.</returns>
     public override INode VisitSetPenSize(LogoParser.SetPenSizeContext context)
         => new Command(LogoLexer.SetPenSize, "setPenSize", 
-            Visit<ExprParam>(context.expr()));
+            Visit<Parameter>(context.expr()));
 
     /// <summary>
     /// Visitor for the <c>SetPalette</c> production.
@@ -290,7 +290,7 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
             ? Visit<ColourNode>(colourListContext)
             : new VarName(context.Variable().GetText());
         return new Command(LogoLexer.SetPalette, "setPalette",
-            Visit<ExprParam>(context.expr()), colour);
+            Visit<Parameter>(context.expr()), colour);
     }
 
     /// <summary>

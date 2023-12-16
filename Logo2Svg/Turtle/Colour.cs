@@ -5,7 +5,7 @@ namespace Logo2Svg.SVG;
 /// </summary>
 public class Colour
 {
-    public static Colour[] Palette =
+    public static readonly Colour[] Palette =
     {
         new(0, 0, 0),       // black
         new(0, 0, 255),     // blue
@@ -44,8 +44,8 @@ public class Colour
         {"teal", new Colour(0, 128, 128)},
         {"aqua", new Colour(0, 255, 255)}
     };
-      
-    private readonly int _red, _green, _blue;
+    
+    public readonly int Red, Green, Blue;
 
     /// <summary>
     /// Constructor, sets a color given the integer RGB components.
@@ -55,15 +55,15 @@ public class Colour
     /// <param name="blue">Blue component.</param>
     public Colour(int red, int green, int blue)
     {
-        _red = red;
-        _green = green;
-        _blue = blue;
+        Red = red;
+        Green = green;
+        Blue = blue;
     }
 
     /// <summary>
     /// Returns a string representation of this colour in SVG/CSS.
     /// </summary>
     /// <returns>Returns the CSS attribute to set the desired colour.</returns>
-    public override string ToString() => $"rgb({_red},{_green},{_blue})";
+    public override string ToString() => $"rgb({Red},{Green},{Blue})";
 }
 

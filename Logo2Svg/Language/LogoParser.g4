@@ -5,7 +5,7 @@ options { tokenVocab=LogoLexer; }
 program : command+ EOF
         ;
 
-command : (simpleCommand | colorCmd | controlStmt)   #basicCommand
+command : (simpleCommand | colourCmd | controlStmt)  #basicCommand
         | SetPos squarePoint                         #setPosition
         | SetXY simplePoint                          #setPosition
         | cmd=(Home|Bye|PenDown|PenUp)               #atomicCmd
@@ -18,10 +18,10 @@ command : (simpleCommand | colorCmd | controlStmt)   #basicCommand
 colourList : '[' expr expr expr ']' 
            ;
         
-colorCmd : SetPenColor ( expr | Variable | colourList )    #setPenColor
-         | SetPalette expr ( Variable | colourList)        #setPalette
-         | SetPenSize expr                                 #setPenSize
-         ; 
+colourCmd : SetPenColor ( expr | Variable | colourList )    #setPenColor
+          | SetPalette expr ( Variable | colourList)        #setPalette
+          | SetPenSize expr                                 #setPenSize
+          ; 
         
 cmdBlock : '[' command+ ']'
          ;        

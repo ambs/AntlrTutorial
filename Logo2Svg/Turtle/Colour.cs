@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+
 namespace Logo2Svg.SVG;
 
 /// <summary>
@@ -25,8 +27,8 @@ public class Colour
         new(128, 128, 128)  // gray
     };
     
-    public static readonly Dictionary<string, Colour> ColourNames = new()
-    {
+    public static readonly ReadOnlyDictionary<string, Colour> ColourNames = new(
+        new Dictionary<string, Colour> {
         {"black", new Colour(0, 0, 0)},
         {"silver", new Colour(192, 192, 192)},
         {"gray", new Colour(128, 128, 128)},
@@ -43,12 +45,12 @@ public class Colour
         {"blue", new Colour(0, 0, 255)},
         {"teal", new Colour(0, 128, 128)},
         {"aqua", new Colour(0, 255, 255)}
-    };
+    });
     
     public readonly int Red, Green, Blue;
 
     /// <summary>
-    /// Constructor, sets a color given the integer RGB components.
+    /// Constructor, sets a colour given the integer RGB components.
     /// </summary>
     /// <param name="red">Red component.</param>
     /// <param name="green">Green component.</param>

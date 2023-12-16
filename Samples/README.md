@@ -27,7 +27,7 @@ A star, by repeating five times a line, with the correct angle.
 
 ### [Sample5.logo](./sample5.logo)
 
-Still using repeat, but incrementing a variable, showing how to set colors, in this case,
+Still using repeat, but incrementing a variable, showing how to set colours, in this case,
 grays from black to white. Note that the online interpreter at https://www.calormen.com/jslogo/
 does not support variables as parameters to the __setpencolor__ command.
 

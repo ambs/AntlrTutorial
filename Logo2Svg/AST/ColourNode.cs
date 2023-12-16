@@ -16,7 +16,7 @@ public class ColourNode : INode
         if (possibleName.StartsWith("#"))
         {
             if (!Regex.IsMatch(possibleName, "^#[0-9A-Fa-f]{6}$"))
-                throw new Exception("Invalid CSS color");
+                throw new Exception("Invalid CSS colour");
             
             _red = int.Parse(possibleName.Substring(1, 2), NumberStyles.HexNumber);
             _green = int.Parse(possibleName.Substring(3, 2), NumberStyles.HexNumber);
@@ -26,7 +26,7 @@ public class ColourNode : INode
         {
             _name = possibleName.ToLowerInvariant();
             if (!SVG.Colour.ColourNames.ContainsKey(_name))
-                throw new Exception("Invalid CSS color name");
+                throw new Exception("Invalid CSS colour name");
         }
     }
 

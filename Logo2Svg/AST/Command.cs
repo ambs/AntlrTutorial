@@ -71,26 +71,8 @@ public class Command : INode
         switch (Id)
         {
             case LogoLexer.SetPenColor:
-            {
-                var colour = Parameter<INode>(0);
-                switch (colour)
-                {
-                    case ColourNode colourNode:
-                        turtle.Colour = colourNode.Colour(turtle);
-                        break;
-                    case ExprParam colourIndex:
-                        var pos = (int) colourIndex.Value(turtle);
-                        if (pos is < 0 or > 15) throw new IndexOutOfRangeException();
-                        turtle.Colour = Colour.Palette[pos];
-                        break;
-                    case VarName colourName:
-                        turtle.Colour = new ColourNode(colourName.Name).Colour(turtle);
-                        break;
-                    default:
-                        throw new Exception("wrong parameter type to SetPenColor");
-                }
+                turtle.Colour = Parameter<ColourNode>(0).Colour(turtle);
                 break;
-            }
             case LogoLexer.SetPalette:
             {
                 var pos = (int) Parameter(0).Value(turtle);

@@ -94,19 +94,8 @@ public class Command : INode
             case LogoLexer.SetPalette:
             {
                 var pos = (int) Parameter(0).Value(turtle);
-                var colour = Parameter<INode>(1);
-                switch (colour)
-                {
-                    case ColourNode colourNode:
-                        if (pos is < 0 or > 15) throw new IndexOutOfRangeException();
-                        Colour.Palette[pos] = colourNode.Colour(turtle);
-                        break;
-                    case VarName namedColour:
-                        Colour.Palette[pos] = new ColourNode(namedColour.Name).Colour(turtle);
-                        break;
-                    default:
-                        throw new Exception("Invalid parameter type to SetPalette");
-                }
+                if (pos is < 0 or > 15) throw new IndexOutOfRangeException();
+                Colour.Palette[pos] = Parameter<ColourNode>(1).Colour(turtle);
                 break;
             }
             case LogoLexer.PenDown:

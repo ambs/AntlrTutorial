@@ -92,7 +92,7 @@ public class AstTests
         Assert.AreEqual(2, cmd.Params.Count);
         var position = cmd.Parameter<ValueParam>(0);
         Assert.IsNotNull(position);
-        var colour = cmd.Parameter<VarName>(1);
+        var colour = cmd.Parameter<ColourNode>(1);
         Assert.IsNotNull(colour);
     }
     

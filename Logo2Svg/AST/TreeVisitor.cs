@@ -289,7 +289,7 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
     {
         INode colour = context.colourList() is { } colourListContext
             ? Visit<ColourNode>(colourListContext)
-            : new VarName(context.Variable().GetText());
+            : new ColourNode(new VarName(context.Variable().GetText()));
         return new Command(LogoLexer.SetPalette, "setPalette",
             Visit<Parameter>(context.expr()), colour);
     }

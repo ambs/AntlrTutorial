@@ -8,7 +8,7 @@ program : command+ EOF
 command : (simpleCommand | colourCmd | controlStmt)  #basicCommand
         | SetPos squarePoint                         #setPosition
         | SetXY simplePoint                          #setPosition
-        | cmd=(Home|Bye|PenDown|PenUp|Stop)          #atomicCmd
+        | cmd=(Home|Bye|PenDown|PenUp|StopTk)        #atomicCmd
         | Arc expr expr                              #arc
         | Make Variable expr                         #setVariable
         | Name expr Variable                         #setVariable
@@ -16,8 +16,6 @@ command : (simpleCommand | colourCmd | controlStmt)  #basicCommand
         | To Literal VariableRef* command+ End       #defineMethod
         | Literal expr*                              #customCommand
         ;
-
-
 
 colourList : '[' expr expr expr ']' 
            ;

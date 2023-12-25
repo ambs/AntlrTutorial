@@ -81,7 +81,7 @@ SetXY   : S E T X Y ;
 SetPos  : S E T P O S ;
 SetH    : S E T H ( E A D I N G )? ;
 
-Stop    : S T O P ;
+StopTk  : S T O P ;
 
 Literal : [a-zA-Z_]+ ;
 

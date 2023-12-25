@@ -18,7 +18,7 @@ public class Command : INode
     /// </summary>
     public readonly List<INode> Params;
     
-    private string Name { get; }
+    public string Name { get; }
 
     private Parameter Parameter(int index) => Parameter<Parameter>(index);
     

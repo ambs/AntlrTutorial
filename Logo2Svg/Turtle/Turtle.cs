@@ -1,3 +1,4 @@
+using Logo2Svg.AST;
 using Logo2Svg.SVG;
 
 namespace Logo2Svg;
@@ -45,6 +46,7 @@ public class Turtle
 
     private float _rotation;
     private readonly Dictionary<string, float> _symbolTable = new();
+    private readonly Dictionary<string, Method> _methodTable = new();
     private readonly Canvas _canvas = new();
 
     /// <summary>
@@ -131,4 +133,8 @@ public class Turtle
     /// <returns>A boolean stating if the variable was found in the symbol table.</returns>
     public bool RetrieveVariable(string varName, out float value) => _symbolTable.TryGetValue(varName, out value);
 
+    public void DefineMethod(Method method) => _methodTable[method.Name] = method;
+
+    public bool RetrieveMethod(string name, int arity, out Method method) =>
+        _methodTable.TryGetValue($"{name.ToLowerInvariant()}/{arity}", out method);
 }

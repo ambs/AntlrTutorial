@@ -308,4 +308,25 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
                 new ColourNode(new VarName(context.Variable().GetText()));
         return new Command(LogoLexer.SetPenColor, "setPenColor", colour);
     }
+
+    /// <summary>
+    /// Visitor for the <c>DefineMethod</c> clause.
+    /// </summary>
+    /// <param name="context">Production context.</param>
+    /// <returns>Returns a command for the <c>To</c> code</returns>
+    public override INode VisitDefineMethod(LogoParser.DefineMethodContext context)
+    {
+        var args = context.VariableRef().Select(x => x.GetText()).ToList();
+        var name = context.Literal().GetText();
+        var code = context.command().Select(Visit<Command>).ToList();
+        return new Command(LogoLexer.To, context.To().GetText(), new Method(name, args, code));
+    }
+
+    /// <summary>
+    /// Visitor for the <c>CustomCommand</c> clause.
+    /// </summary>
+    /// <param name="context">Production context.</param>
+    /// <returns>Returns a fake command (negative id).</returns>
+    public override INode VisitCustomCommand(LogoParser.CustomCommandContext context)
+        => new Command(-1, context.Literal().GetText(), context.expr().Select(Visit<INode>).ToArray());
 }

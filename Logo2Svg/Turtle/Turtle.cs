@@ -133,4 +133,8 @@ public class Turtle
     /// <returns>A boolean stating if the variable was found in the symbol table.</returns>
     public bool RetrieveVariable(string varName, out float value) => _symbolTable.TryGetValue(varName, out value);
 
+    public void DefineMethod(Method method) => _methodTable[method.Name] = method;
+
+    public bool RetrieveMethod(string name, int arity, out Method method) =>
+        _methodTable.TryGetValue($"{name.ToLowerInvariant()}/{arity}", out method);
 }

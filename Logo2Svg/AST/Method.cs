@@ -1,6 +1,6 @@
 namespace Logo2Svg.AST;
 
-public class Method : INode
+public class Method : Parameter
 {
     private readonly string _name;
     private readonly int _arity;
@@ -18,10 +18,10 @@ public class Method : INode
     public string Name => $"{_name.ToLowerInvariant()}/{_arity}";
     
 
-    public void Execute(Turtle turtle, List<ExprParam> parameters)
+    public void Execute(Turtle turtle, List<INode> parameters)
     {
-        
+        throw new NotImplementedException();
     }
-    
-    public void Execute(Turtle turtle) => throw new NotImplementedException();
+
+    public override float Value(Turtle turtle) => throw new NotImplementedException();
 }

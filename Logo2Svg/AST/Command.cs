@@ -70,6 +70,15 @@ public class Command : INode
     {
         switch (Id)
         {
+            case -1:
+                if (turtle.RetrieveMethod(Name, Params.Count, out var method))
+                    method.Execute(turtle, Params);
+                else
+                    throw new Exception("Command not defined");
+                break;
+            case LogoLexer.To:
+                turtle.DefineMethod(Parameter<Method>(0));
+                break;
             case LogoLexer.SetPenColor:
                 turtle.Colour = Parameter<ColourNode>(0).Colour(turtle);
                 break;

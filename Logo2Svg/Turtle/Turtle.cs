@@ -1,3 +1,4 @@
+using Logo2Svg.AST;
 using Logo2Svg.SVG;
 
 namespace Logo2Svg;
@@ -45,6 +46,7 @@ public class Turtle
 
     private float _rotation;
     private readonly Dictionary<string, float> _symbolTable = new();
+    private readonly Dictionary<string, Method> _methodTable = new();
     private readonly Canvas _canvas = new();
 
     /// <summary>

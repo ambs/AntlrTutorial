@@ -133,7 +133,7 @@ public class Command : INode
             }
             case LogoLexer.Make:
             {
-                turtle.DefineVariable(Parameter<VarName>(0).Name, Parameter(1).Value(turtle));
+                turtle.SymbolTable.DefineVariable(Parameter<VarName>(0).Name, Parameter(1).Value(turtle));
                 break;
             }
             case LogoLexer.Forward:

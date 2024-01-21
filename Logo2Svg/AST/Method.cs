@@ -20,6 +20,7 @@ public class Method : Parameter
 
     public void Execute(Turtle turtle, List<INode> parameters)
     {
+        var args = parameters.Cast<Parameter>().Select(x => x.Value(turtle)).ToList();
         throw new NotImplementedException();
     }
 

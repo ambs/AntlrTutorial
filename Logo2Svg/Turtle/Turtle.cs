@@ -44,8 +44,9 @@ public class Turtle
         set => _rotation = Norm(value);
     }
 
+    public readonly SymbolTable SymbolTable = new();
+
     private float _rotation;
-    private readonly Dictionary<string, float> _symbolTable = new();
     private readonly Dictionary<string, Method> _methodTable = new();
     private readonly Canvas _canvas = new();
 
@@ -117,22 +118,7 @@ public class Turtle
         Position = new Point(0, 0);
         Rotation = MathF.PI / 2f;
     }
-
-    /// <summary>
-    /// Defines a variable in the Symbol Table.
-    /// </summary>
-    /// <param name="varName">The variable name to define.</param>
-    /// <param name="value">The variable's value.</param>
-    public void DefineVariable(string varName, float value) => _symbolTable[varName] = value;
-
-    /// <summary>
-    /// Queries the Symbol Table for a variable.
-    /// </summary>
-    /// <param name="varName">The variable name to be queries.</param>
-    /// <param name="value">The value of the variable, if it is defined.</param>
-    /// <returns>A boolean stating if the variable was found in the symbol table.</returns>
-    public bool RetrieveVariable(string varName, out float value) => _symbolTable.TryGetValue(varName, out value);
-
+    
     public void DefineMethod(Method method) => _methodTable[method.Name] = method;
 
     public bool RetrieveMethod(string name, int arity, out Method method) =>

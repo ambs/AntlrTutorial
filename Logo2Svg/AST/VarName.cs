@@ -21,7 +21,7 @@ public class VarName : Parameter
     /// </summary>
     /// <param name="turtle">The turtle data, that includes the symbol table.</param>
     /// <returns>The stored value, or 0 otherwise.</returns>
-    public override float Value(Turtle turtle) => turtle.RetrieveVariable(Name, out var expr) ? expr : 0f;
+    public override float Value(Turtle turtle) => turtle.SymbolTable.RetrieveVariable(Name, out var expr) ? expr : 0f;
 
     /// <summary>
     /// Stringification of the variable name.

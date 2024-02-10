@@ -111,4 +111,30 @@ public class AstTests
         var colour = cmd.Parameter<ColourNode>(1);
         Assert.IsNotNull(colour);
     }
+
+    [TestMethod]
+    public void MethodDefinition_NoArgs()
+    {
+        var tree = @"to star
+                        repeat 5 [ fd 100 rt 144 ]
+                      end
+                      star".ToAst() as Program;
+        Assert.IsNotNull(tree);
+        Assert.AreEqual(2, tree.Count);
+
+        var toCommand = tree.First();
+        Assert.AreEqual(LogoLexer.To, toCommand.Id);
+        var methodDef = toCommand.Parameter<Method>(0);
+        Assert.IsNotNull(methodDef);
+        Assert.AreEqual("star/0", methodDef.Name);
+        var methodCode = methodDef.Code;
+        Assert.IsNotNull(methodCode);
+        Assert.AreEqual(1, methodCode.Count);
+        Assert.AreEqual(LogoLexer.Repeat, methodCode.First().Id);
+
+        var invocation = tree.Last();
+        Assert.AreEqual(-1, invocation.Id);
+        Assert.AreEqual("star", invocation.Name);
+        Assert.AreEqual(0, invocation.Params.Count);
+    }
 }

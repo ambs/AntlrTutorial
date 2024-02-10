@@ -193,7 +193,7 @@ public class ExpressionsParser
     [TestMethod]
     public void Variable()
     {
-        var tree = @"MAKE ""a 10 MAKE ""b 20 MAKE ""c thing ""a + :b".ToAst();
+        var tree = """MAKE "a 10 MAKE "b 20 MAKE "c thing "a + :b""".ToAst();
         var turtle = new Turtle();
         tree.Execute(turtle);
         Assert.IsTrue(turtle.RetrieveVariable("a", out var val1));

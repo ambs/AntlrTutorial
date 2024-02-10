@@ -12,3 +12,5 @@ This is the code I wrote for my ANTLR tutorial
  - Part VI: https://null.zbr.pt/antlr-tutorial-part-vi/
  - Part VII: https://null.zbr.pt/antlr-tutorial-part-vii/
  - Part VIII: https://null.zbr.pt/antlr-tutorial-part-viii/
+ - Part IX: https://null.zbr.pt/antlr-tutorial-part-ix/
+ - Part X: https://null.zbr.pt/antlr-tutorial-part-x/

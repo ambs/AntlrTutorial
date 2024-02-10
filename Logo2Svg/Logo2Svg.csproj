@@ -27,4 +27,8 @@
      </Antlr4>
    </ItemGroup>
 
+   <ItemGroup>
+     <Compile Remove="Turtle\SymbolTable.cs" />
+   </ItemGroup>
+
 </Project>

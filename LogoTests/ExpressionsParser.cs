@@ -193,14 +193,14 @@ public class ExpressionsParser
     [TestMethod]
     public void Variable()
     {
-        var tree = @"MAKE ""a 10 MAKE ""b 20 MAKE ""c thing ""a + :b".ToAst();
+        var tree = """MAKE "a 10 MAKE "b 20 MAKE "c thing "a + :b""".ToAst();
         var turtle = new Turtle();
         tree.Execute(turtle);
-        Assert.IsTrue(turtle.SymbolTable.RetrieveVariable("a", out var val1));
+        Assert.IsTrue(turtle.RetrieveVariable("a", out var val1));
         Assert.AreEqual(10, val1);
-        Assert.IsTrue(turtle.SymbolTable.RetrieveVariable("b", out var val2));
+        Assert.IsTrue(turtle.RetrieveVariable("b", out var val2));
         Assert.AreEqual(20, val2);
-        Assert.IsTrue(turtle.SymbolTable.RetrieveVariable("c", out var val3));
+        Assert.IsTrue(turtle.RetrieveVariable("c", out var val3));
         Assert.AreEqual(30, val3);
     }
     
@@ -214,13 +214,13 @@ public class ExpressionsParser
                           IfElse [ :b < 69 ] [ MAKE ""d 0 ] [ MAKE ""d 1 ]".ToAst();
         var turtle = new Turtle();
         tree.Execute(turtle);
-        Assert.IsTrue(turtle.SymbolTable.RetrieveVariable("a", out var val1));
+        Assert.IsTrue(turtle.RetrieveVariable("a", out var val1));
         Assert.AreEqual(10, val1);
-        Assert.IsTrue(turtle.SymbolTable.RetrieveVariable("b", out var val2));
+        Assert.IsTrue(turtle.RetrieveVariable("b", out var val2));
         Assert.AreEqual(69, val2);
-        Assert.IsTrue(turtle.SymbolTable.RetrieveVariable("c", out var val3));
+        Assert.IsTrue(turtle.RetrieveVariable("c", out var val3));
         Assert.AreEqual(0, val3);
-        Assert.IsTrue(turtle.SymbolTable.RetrieveVariable("d", out var val4));
+        Assert.IsTrue(turtle.RetrieveVariable("d", out var val4));
         Assert.AreEqual(1, val4);
     }
 }

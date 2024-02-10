@@ -76,6 +76,8 @@ public class Command : INode
                 else
                     throw new Exception("Command not defined");
                 break;
+            case LogoLexer.StopTk:
+                throw new LogoStopException();
             case LogoLexer.To:
                 turtle.DefineMethod(Parameter<Method>(0));
                 break;
@@ -133,7 +135,7 @@ public class Command : INode
             }
             case LogoLexer.Make:
             {
-                turtle.SymbolTable.DefineVariable(Parameter<VarName>(0).Name, Parameter(1).Value(turtle));
+                turtle.DefineVariable(Parameter<VarName>(0).Name, Parameter(1).Value(turtle));
                 break;
             }
             case LogoLexer.Forward:
@@ -150,7 +152,7 @@ public class Command : INode
             {
                 var value = Parameter(0).Value(turtle);
                 var pos = turtle.Position;
-                var target = new Point(pos.X + MathF.Cos(turtle.Rotation) * value,
+                var target = new Point(pos.X - MathF.Cos(turtle.Rotation) * value,
                     pos.Y + MathF.Sin(turtle.Rotation) * value);
                 if (turtle.IsDrawing) turtle.AddLine(pos, target);
                 turtle.Position = target;
@@ -215,4 +217,8 @@ public class Command : INode
                 throw new Exception($"Unknown command: {Id}-{Name}");
         }
     }
+}
+
+public class LogoStopException : Exception
+{
 }

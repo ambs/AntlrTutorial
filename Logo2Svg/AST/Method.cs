@@ -21,7 +21,25 @@ public class Method : Parameter
     public void Execute(Turtle turtle, List<INode> parameters)
     {
         var args = parameters.Cast<Parameter>().Select(x => x.Value(turtle)).ToList();
-        throw new NotImplementedException();
+        turtle.EnterScope();
+
+        foreach (var (name, value) in _parameters.Zip(args, (a, b) => (a, b)))
+        {
+            turtle.DefineVariable(name, value);
+        }
+
+        try
+        {
+            Code.Execute(turtle);
+        }
+        catch (LogoStopException)
+        {
+            // recover
+        }
+        finally
+        {
+            turtle.ExitScope();
+        }
     }
 
     public override float Value(Turtle turtle) => throw new NotImplementedException();

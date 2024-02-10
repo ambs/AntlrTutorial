@@ -5,6 +5,13 @@ namespace Logo2Svg;
 
 public class Turtle
 {
+    private readonly Stack<Dictionary<string, float>> _state = new();   
+    
+    /// <summary>
+    /// Constant used to convert degrees into radians. 
+    /// </summary>
+    public const float ToRadians = MathF.PI / 180f;
+
     /// <summary>
     /// Current turtle position.
     /// </summary>
@@ -18,42 +25,40 @@ public class Turtle
     /// <summary>
     /// Current turtle line width.
     /// </summary>
-    public int Width = 1; 
-
-    /// <summary>
-    /// Constant used to convert degrees into radians. 
-    /// </summary>
-    public const float ToRadians = MathF.PI / 180f; 
+    public int Width = 1;
     
     /// <summary>
-    /// Defines if the turtle is in exiting mode.
+    /// Rotation of the turtle (angle it is facing to)
     /// </summary>
-    public bool IsExiting { get; private set; }
+    private float _rotation;
 
+    internal float Rotation
+    {
+        get => _rotation;
+        set => _rotation = Norm(value);
+    }
+    
     /// <summary>
     /// Defines is the turtle is drawing.
     /// </summary>
     public bool IsDrawing = true;
     
     /// <summary>
-    /// Rotation of the turtle (angle it is facing to)
+    /// Defines if the turtle is in exiting mode.
     /// </summary>
-    public float Rotation
-    {
-        get => _rotation;
-        set => _rotation = Norm(value);
-    }
-
-    public readonly SymbolTable SymbolTable = new();
-
-    private float _rotation;
+    public bool IsExiting { get; private set; }
+    
     private readonly Dictionary<string, Method> _methodTable = new();
     private readonly Canvas _canvas = new();
 
     /// <summary>
     /// Turtle constructor.
     /// </summary>
-    public Turtle() => Reset();
+    public Turtle()
+    {
+        _state.Push(new Dictionary<string, float>());
+        Reset();
+    }
 
     /// <summary>
     /// Sets turtle in exiting mode.
@@ -109,18 +114,37 @@ public class Turtle
             return false;
         }
     }
-
-    /// <summary>
-    /// Resets the turtle position and rotation.
-    /// </summary>
-    public void Reset()
-    {
-        Position = new Point(0, 0);
-        Rotation = MathF.PI / 2f;
-    }
     
     public void DefineMethod(Method method) => _methodTable[method.Name] = method;
 
     public bool RetrieveMethod(string name, int arity, out Method method) =>
         _methodTable.TryGetValue($"{name.ToLowerInvariant()}/{arity}", out method);
+    
+     
+    /// <summary>
+    /// Defines a variable in the Symbol Table.
+    /// </summary>
+    /// <param name="varName">The variable name to define.</param>
+    /// <param name="value">The variable's value.</param>
+    public void DefineVariable(string varName, float value) => _state.Peek()[varName] = value;
+
+    /// <summary>
+    /// Queries the Symbol Table for a variable.
+    /// </summary>
+    /// <param name="varName">The variable name to be queries.</param>
+    /// <param name="value">The value of the variable, if it is defined.</param>
+    /// <returns>A boolean stating if the variable was found in the symbol table.</returns>
+    public bool RetrieveVariable(string varName, out float value) => _state.Peek().TryGetValue(varName, out value);
+
+    public void EnterScope() => _state.Push(new Dictionary<string, float>(_state.Peek()));
+
+    public void ExitScope() => _state.Pop();
+
+    public void Reset()
+    {
+        Position = new Point(0, 0);
+        Rotation = MathF.PI / 2f;
+        Width = 1;
+        IsDrawing = true;
+    }
 }

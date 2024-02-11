@@ -1,7 +1,4 @@
-using Antlr4.Runtime;
-using Logo2Svg;
-using Logo2Svg.AST;
-using Logo2Svg.Language;
+using Logo2Svg.Turtle;
 
 namespace LogoTests;
 
@@ -194,7 +191,7 @@ public class ExpressionsParser
     public void Variable()
     {
         var tree = """MAKE "a 10 MAKE "b 20 MAKE "c thing "a + :b""".ToAst();
-        var turtle = new Turtle();
+        var turtle = new TurtleState();
         tree.Execute(turtle);
         Assert.IsTrue(turtle.RetrieveVariable("a", out var val1));
         Assert.AreEqual(10, val1);
@@ -212,7 +209,7 @@ public class ExpressionsParser
                           If [ true ] [ MAKE ""b 69 ]
                           IfElse [ :b >= 69 ] [ MAKE ""c 0 ] [ MAKE ""c 1 ]
                           IfElse [ :b < 69 ] [ MAKE ""d 0 ] [ MAKE ""d 1 ]".ToAst();
-        var turtle = new Turtle();
+        var turtle = new TurtleState();
         tree.Execute(turtle);
         Assert.IsTrue(turtle.RetrieveVariable("a", out var val1));
         Assert.AreEqual(10, val1);

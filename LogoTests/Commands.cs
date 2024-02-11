@@ -1,5 +1,4 @@
-using Logo2Svg.AST;
-using Logo2Svg.SVG;
+using Logo2Svg.Turtle;
 
 namespace LogoTests;
 
@@ -7,14 +6,14 @@ namespace LogoTests;
 public class Commands
 {
     [TestMethod]
-    [DataRow("[ 99 0 0 ]")]
-    [DataRow(@"""red")]
-    [DataRow(@"""#ff0000")]
-    [DataRow(@"""#FF0000")]
-    public void Commands_SetPalette(string c)
+    [DataRow(0, "[ 99 0 0 ]")]
+    [DataRow(1, @"""red")]
+    [DataRow(2, @"""#ff0000")]
+    [DataRow(3, @"""#FF0000")]
+    public void Commands_SetPalette(int pos, string color)
     {
-        $"SetPalette 0 {c}".Execute();
-        var colour = Colour.Palette[0];
+        $"SetPalette {pos} {color}".Execute();
+        var colour = Colour.Palette[pos];
         Assert.IsNotNull(colour);
         colour.AssertColour(255, 0, 0);
     }

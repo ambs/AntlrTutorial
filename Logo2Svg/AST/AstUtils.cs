@@ -18,5 +18,4 @@ public static class AstUtils
     /// <param name="value">The boolean value to be converted.</param>
     /// <returns>The respective float value.</returns>
     public static float AsFloat(this bool value) => value ? 1f : 0f;
-
 }

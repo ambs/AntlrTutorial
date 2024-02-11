@@ -1,5 +1,6 @@
 using Logo2Svg.Language;
 using Logo2Svg.SVG;
+using Logo2Svg.Turtle;
 
 namespace Logo2Svg.AST;
 
@@ -64,152 +65,152 @@ public class Command : INode
     /// <summary>
     /// Executes the command.
     /// </summary>
-    /// <param name="turtle">The Turtle information.</param>
+    /// <param name="turtleState">The Turtle information.</param>
     /// <exception cref="Exception">The ID of the command is invalid.</exception>
-    public void Execute(Turtle turtle)
+    public void Execute(TurtleState turtleState)
     {
         switch (Id)
         {
             case -1:
-                if (turtle.RetrieveMethod(Name, Params.Count, out var method))
-                    method.Execute(turtle, Params);
+                if (turtleState.RetrieveMethod(Name, Params.Count, out var method))
+                    method.Execute(turtleState, Params);
                 else
                     throw new Exception("Command not defined");
                 break;
             case LogoLexer.StopTk:
                 throw new LogoStopException();
             case LogoLexer.To:
-                turtle.DefineMethod(Parameter<Method>(0));
+                turtleState.DefineMethod(Parameter<Method>(0));
                 break;
             case LogoLexer.SetPenColor:
-                turtle.Colour = Parameter<ColourNode>(0).Colour(turtle);
+                turtleState.Colour = Parameter<ColourNode>(0).Colour(turtleState);
                 break;
             case LogoLexer.SetPalette:
             {
-                var pos = (int) Parameter(0).Value(turtle);
+                var pos = (int) Parameter(0).Value(turtleState);
                 if (pos is < 0 or > 15) throw new IndexOutOfRangeException();
-                Colour.Palette[pos] = Parameter<ColourNode>(1).Colour(turtle);
+                Colour.Palette[pos] = Parameter<ColourNode>(1).Colour(turtleState);
                 break;
             }
             case LogoLexer.PenDown:
-                turtle.IsDrawing = true;
+                turtleState.IsDrawing = true;
                 break;
             case LogoLexer.PenUp:
-                turtle.IsDrawing = false;
+                turtleState.IsDrawing = false;
                 break;
             
             case LogoLexer.SetPenSize:
-                turtle.Width = (int) Parameter(0).Value(turtle);
+                turtleState.Width = (int) Parameter(0).Value(turtleState);
                 break;
             case LogoLexer.If:
             {
-                var condition = Parameter(0).Value(turtle).AsBool();
-                if (condition) Parameter<CommandBlock>(1).Execute(turtle);
+                var condition = Parameter(0).Value(turtleState).AsBool();
+                if (condition) Parameter<CommandBlock>(1).Execute(turtleState);
                 break;
             }
             case LogoLexer.IfElse:
             {
-                var condition = Parameter(0).Value(turtle).AsBool();
-                if (condition) Parameter<CommandBlock>(1).Execute(turtle);
-                else Parameter<CommandBlock>(2).Execute(turtle);
+                var condition = Parameter(0).Value(turtleState).AsBool();
+                if (condition) Parameter<CommandBlock>(1).Execute(turtleState);
+                else Parameter<CommandBlock>(2).Execute(turtleState);
                 break;
             }
             case LogoLexer.Forever:
-                while (!turtle.IsExiting) Parameter<CommandBlock>(0).Execute(turtle);
+                while (!turtleState.IsExiting) Parameter<CommandBlock>(0).Execute(turtleState);
                 break;
             case LogoLexer.Repeat:
             {
-                var times = (int) Parameter(0).Value(turtle);
-                for (var i = 0; i < times && !turtle.IsExiting; i++)
-                    Parameter<CommandBlock>(1).Execute(turtle);
+                var times = (int) Parameter(0).Value(turtleState);
+                for (var i = 0; i < times && !turtleState.IsExiting; i++)
+                    Parameter<CommandBlock>(1).Execute(turtleState);
                 break;
             }
             case LogoLexer.Bye:
-                turtle.Exiting();
+                turtleState.Exiting();
                 break;
             case LogoLexer.Show:
             {
-                var value = Parameter(0).Value(turtle);
+                var value = Parameter(0).Value(turtleState);
                 Console.WriteLine(value);
                 break;
             }
             case LogoLexer.Make:
             {
-                turtle.DefineVariable(Parameter<VarName>(0).Name, Parameter(1).Value(turtle));
+                turtleState.DefineVariable(Parameter<VarName>(0).Name, Parameter(1).Value(turtleState));
                 break;
             }
             case LogoLexer.Forward:
             {
-                var value = Parameter(0).Value(turtle);
-                var pos = turtle.Position;
-                var target = new Point(pos.X + MathF.Cos(turtle.Rotation) * value,
-                    pos.Y - MathF.Sin(turtle.Rotation) * value);
-                if (turtle.IsDrawing) turtle.AddLine(pos, target);
-                turtle.Position = target;
+                var value = Parameter(0).Value(turtleState);
+                var pos = turtleState.Position;
+                var target = new Point(pos.X + MathF.Cos(turtleState.Rotation) * value,
+                    pos.Y - MathF.Sin(turtleState.Rotation) * value);
+                if (turtleState.IsDrawing) turtleState.AddLine(pos, target);
+                turtleState.Position = target;
                 break;
             }
             case LogoLexer.Back:
             {
-                var value = Parameter(0).Value(turtle);
-                var pos = turtle.Position;
-                var target = new Point(pos.X - MathF.Cos(turtle.Rotation) * value,
-                    pos.Y + MathF.Sin(turtle.Rotation) * value);
-                if (turtle.IsDrawing) turtle.AddLine(pos, target);
-                turtle.Position = target;
+                var value = Parameter(0).Value(turtleState);
+                var pos = turtleState.Position;
+                var target = new Point(pos.X - MathF.Cos(turtleState.Rotation) * value,
+                    pos.Y + MathF.Sin(turtleState.Rotation) * value);
+                if (turtleState.IsDrawing) turtleState.AddLine(pos, target);
+                turtleState.Position = target;
                 break;
             }
             case LogoLexer.Right:
             {
-                var value = Parameter(0).Value(turtle);
-                turtle.Rotation -= value * Turtle.ToRadians;
+                var value = Parameter(0).Value(turtleState);
+                turtleState.Rotation -= value * TurtleState.ToRadians;
                 break;
             }
             case LogoLexer.Left:
             {
-                var value = Parameter(0).Value(turtle);
-                turtle.Rotation += value * Turtle.ToRadians;
+                var value = Parameter(0).Value(turtleState);
+                turtleState.Rotation += value * TurtleState.ToRadians;
                 break;
             }
 
             case LogoLexer.Home:
-                turtle.Reset();
+                turtleState.Reset();
                 break;
             
             case LogoLexer.SetXY:
             case LogoLexer.SetPos:
             {
-                var target = Parameter<PointParam>(0).Point(turtle);
-                if (turtle.IsDrawing) turtle.AddLine(turtle.Position, target);
-                turtle.Position = target;
+                var target = Parameter<PointParam>(0).Point(turtleState);
+                if (turtleState.IsDrawing) turtleState.AddLine(turtleState.Position, target);
+                turtleState.Position = target;
                 break;
             }
 
             case LogoLexer.SetX:
             {
-                var target = turtle.Position.Clone();
-                target.X = Parameter(0).Value(turtle);
-                if (turtle.IsDrawing) turtle.AddLine(turtle.Position, target);
-                turtle.Position = target;
+                var target = turtleState.Position.Clone();
+                target.X = Parameter(0).Value(turtleState);
+                if (turtleState.IsDrawing) turtleState.AddLine(turtleState.Position, target);
+                turtleState.Position = target;
                 break;
             }
             case LogoLexer.SetY:
             {
-                var target = turtle.Position.Clone();
-                target.Y = Parameter(0).Value(turtle);
-                if (turtle.IsDrawing) turtle.AddLine(turtle.Position, target);
-                turtle.Position = target;
+                var target = turtleState.Position.Clone();
+                target.Y = Parameter(0).Value(turtleState);
+                if (turtleState.IsDrawing) turtleState.AddLine(turtleState.Position, target);
+                turtleState.Position = target;
                 break;
             }
             case LogoLexer.SetH:
-                turtle.Rotation = Parameter(0).Value(turtle);
+                turtleState.Rotation = Parameter(0).Value(turtleState);
                 break;
 
             case LogoLexer.Arc:
-                if (turtle.IsDrawing)
+                if (turtleState.IsDrawing)
                 {
-                    var angle = Parameter(0).Value(turtle) * Turtle.ToRadians;
-                    var radius = Parameter(1).Value(turtle);
-                    turtle.AddArc(turtle.Position, turtle.Rotation, radius, angle);
+                    var angle = Parameter(0).Value(turtleState) * TurtleState.ToRadians;
+                    var radius = Parameter(1).Value(turtleState);
+                    turtleState.AddArc(turtleState.Position, turtleState.Rotation, radius, angle);
                 }
                 break;
             

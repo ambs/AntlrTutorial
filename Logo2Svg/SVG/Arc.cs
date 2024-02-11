@@ -1,3 +1,5 @@
+using Logo2Svg.Turtle;
+
 namespace Logo2Svg.SVG;
 
 /// <summary>
@@ -38,7 +40,7 @@ public class Arc : IDrawable
     private List<Point> ComputePoints()
     {
         List<Point> pts = new();
-        for (var alpha = _facing; alpha > _facing - _angle; alpha -= Turtle.ToRadians)
+        for (var alpha = _facing; alpha > _facing - _angle; alpha -= TurtleState.ToRadians)
         {
             pts.Add(ComputePoint(alpha));
         }

@@ -1,4 +1,5 @@
 using System.Globalization;
+using Logo2Svg.Turtle;
 
 namespace Logo2Svg.AST;
 
@@ -27,7 +28,7 @@ public class ValueParam : Parameter
     /// <summary>
     /// Evaluation method, given a Turtle.
     /// </summary>
-    /// <param name="turtle">The turtle data.</param>
+    /// <param name="turtleState">The turtle data.</param>
     /// <returns>The float value.</returns>
-    public override float Value(Turtle turtle) => FloatValue;
+    public override float Value(TurtleState turtleState) => FloatValue;
 }

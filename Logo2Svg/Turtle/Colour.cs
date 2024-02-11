@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace Logo2Svg.SVG;
+namespace Logo2Svg.Turtle;
 
 /// <summary>
 /// Represents a colour, composed of the RGB components (integers from 0 to 255).
@@ -27,25 +27,25 @@ public class Colour
         new(128, 128, 128)  // gray
     };
     
-    public static readonly ReadOnlyDictionary<string, Colour> ColourNames = new(
-        new Dictionary<string, Colour> {
-        {"black", new Colour(0, 0, 0)},
-        {"silver", new Colour(192, 192, 192)},
-        {"gray", new Colour(128, 128, 128)},
-        {"white", new Colour(255, 255, 255)},
-        {"maroon", new Colour(128, 0, 0)},
-        {"red", new Colour(255, 0, 0)},
-        {"purple", new Colour(128, 0, 128)},
-        {"fuchsia", new Colour(255, 0, 255)},
-        {"green", new Colour(0, 128, 0)},
-        {"lime", new Colour(0, 255, 0)},
-        {"olive", new Colour(128, 128, 0)},
-        {"yellow", new Colour(255, 255, 0)},
-        {"navy", new Colour(0, 0, 128)},
-        {"blue", new Colour(0, 0, 255)},
-        {"teal", new Colour(0, 128, 128)},
-        {"aqua", new Colour(0, 255, 255)}
-    });
+    public static readonly ReadOnlyDictionary<string, Colour> ColourNames =
+        new(new Dictionary<string, Colour> {
+            {"black", new Colour(0, 0, 0)},
+            {"silver", new Colour(192, 192, 192)},
+            {"gray", new Colour(128, 128, 128)},
+            {"white", new Colour(255, 255, 255)},
+            {"maroon", new Colour(128, 0, 0)},
+            {"red", new Colour(255, 0, 0)},
+            {"purple", new Colour(128, 0, 128)},
+            {"fuchsia", new Colour(255, 0, 255)},
+            {"green", new Colour(0, 128, 0)},
+            {"lime", new Colour(0, 255, 0)},
+            {"olive", new Colour(128, 128, 0)},
+            {"yellow", new Colour(255, 255, 0)},
+            {"navy", new Colour(0, 0, 128)},
+            {"blue", new Colour(0, 0, 255)},
+            {"teal", new Colour(0, 128, 128)},
+            {"aqua", new Colour(0, 255, 255)}
+        });
     
     public readonly int Red, Green, Blue;
 
@@ -68,4 +68,3 @@ public class Colour
     /// <returns>Returns the CSS attribute to set the desired colour.</returns>
     public override string ToString() => $"rgb({Red},{Green},{Blue})";
 }
-

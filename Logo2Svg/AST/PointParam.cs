@@ -1,4 +1,5 @@
 using Logo2Svg.SVG;
+using Logo2Svg.Turtle;
 
 namespace Logo2Svg.AST;
 
@@ -23,18 +24,18 @@ public class PointParam : Parameter
     /// <summary>
     /// Evaluator of a parameter point.
     /// </summary>
-    /// <param name="turtle">The turtle information.</param>
+    /// <param name="turtleState">The turtle information.</param>
     /// <returns>a new point with the point parameter values after evaluation</returns>
-    public Point Point(Turtle turtle) => new(_x.Value(turtle), _y.Value(turtle));
+    public Point Point(TurtleState turtleState) => new(_x.Value(turtleState), _y.Value(turtleState));
     
     /// <summary>
     /// A point parameter can't be evaluated as a float value but rather as a point.
     /// <see cref="Point"/>
     /// </summary>
-    /// <param name="turtle">The turtle information.</param>
+    /// <param name="turtleState">The turtle information.</param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException">This method can't be implemented.</exception>
-    public override float Value(Turtle turtle) => throw new NotImplementedException();
+    public override float Value(TurtleState turtleState) => throw new NotImplementedException();
     
     /// <summary>
     /// Stringification function.

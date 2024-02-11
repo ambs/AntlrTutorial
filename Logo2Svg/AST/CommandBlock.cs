@@ -1,3 +1,5 @@
+using Logo2Svg.Turtle;
+
 namespace Logo2Svg.AST;
 
 /// <summary>
@@ -14,13 +16,13 @@ public class CommandBlock :  List<Command>, INode
     /// <summary>
     /// Executes the current block of commands.
     /// </summary>
-    /// <param name="turtle">Turtle information.</param>
-    public void Execute(Turtle turtle)
+    /// <param name="turtleState">Turtle information.</param>
+    public void Execute(TurtleState turtleState)
     {
         foreach (var cmd in this)
         {
-            cmd.Execute(turtle);
-            if (turtle.IsExiting) break;
+            cmd.Execute(turtleState);
+            if (turtleState.IsExiting) break;
         }
     }
         

@@ -1,5 +1,7 @@
 namespace Logo2Svg.SVG;
 
+using Turtle;
+
 /// <summary>
 /// Interface of all SVG drawable elements. 
 /// </summary>

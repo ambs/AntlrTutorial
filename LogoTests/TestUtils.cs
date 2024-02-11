@@ -1,8 +1,7 @@
 using Antlr4.Runtime;
-using Logo2Svg;
 using Logo2Svg.AST;
 using Logo2Svg.Language;
-using Logo2Svg.SVG;
+using Logo2Svg.Turtle;
 
 namespace LogoTests;
 
@@ -31,10 +30,10 @@ public static class TestUtils
         return visitor.Visit(tree);
     }
 
-    public static (Turtle, Program?) Execute(this string code)
+    public static (TurtleState, Program?) Execute(this string code)
     {
         var tree = code.ToAst();
-        var turtle = new Turtle();
+        var turtle = new TurtleState();
         tree.Execute(turtle);
         return (turtle, tree as Program);
     }

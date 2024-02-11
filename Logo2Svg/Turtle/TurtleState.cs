@@ -1,9 +1,9 @@
 using Logo2Svg.AST;
 using Logo2Svg.SVG;
 
-namespace Logo2Svg;
+namespace Logo2Svg.Turtle;
 
-public class Turtle
+public class TurtleState
 {
     private readonly Stack<Dictionary<string, float>> _state = new();   
     
@@ -54,7 +54,7 @@ public class Turtle
     /// <summary>
     /// Turtle constructor.
     /// </summary>
-    public Turtle()
+    public TurtleState()
     {
         _state.Push(new Dictionary<string, float>());
         Reset();

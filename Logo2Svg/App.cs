@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime;
 using Logo2Svg.Language;
 using Logo2Svg.AST;
+using Logo2Svg.Turtle;
 
 namespace Logo2Svg;
 
@@ -18,16 +19,16 @@ static class App {
     Console.WriteLine($"From {input} to {output}");
     try
     {
-      using FileStream fs = File.OpenRead(input);
-      AntlrInputStream inputStream = new AntlrInputStream(fs);
+      using var fs = File.OpenRead(input);
+      var inputStream = new AntlrInputStream(fs);
       var lexer = new LogoLexer(inputStream);
       var parser = new LogoParser(new CommonTokenStream(lexer));
       
       var programContext = parser.program();
       var visitor = new TreeVisitor();
-      Program program = visitor.Visit<Program>(programContext);
+      var program = visitor.Visit<Program>(programContext);
 
-      Turtle turtle = new Turtle();
+      var turtle = new TurtleState();
       program.Execute(turtle);
       turtle.Save(output);
     }

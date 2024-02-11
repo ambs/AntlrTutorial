@@ -1,3 +1,5 @@
+using Logo2Svg.Turtle;
+
 namespace Logo2Svg.AST;
 
 public class Method : Parameter
@@ -16,21 +18,20 @@ public class Method : Parameter
     }
     
     public string Name => $"{_name.ToLowerInvariant()}/{_arity}";
-    
 
-    public void Execute(Turtle turtle, List<INode> parameters)
+    public void Execute(TurtleState turtleState, List<INode> parameters)
     {
-        var args = parameters.Cast<Parameter>().Select(x => x.Value(turtle)).ToList();
-        turtle.EnterScope();
+        var args = parameters.Cast<Parameter>().Select(x => x.Value(turtleState)).ToList();
+        turtleState.EnterScope();
 
         foreach (var (name, value) in _parameters.Zip(args, (a, b) => (a, b)))
         {
-            turtle.DefineVariable(name, value);
+            turtleState.DefineVariable(name, value);
         }
 
         try
         {
-            Code.Execute(turtle);
+            Code.Execute(turtleState);
         }
         catch (LogoStopException)
         {
@@ -38,9 +39,9 @@ public class Method : Parameter
         }
         finally
         {
-            turtle.ExitScope();
+            turtleState.ExitScope();
         }
     }
 
-    public override float Value(Turtle turtle) => throw new NotImplementedException();
+    public override float Value(TurtleState turtleState) => throw new NotImplementedException();
 }

@@ -1,5 +1,7 @@
 namespace Logo2Svg.SVG;
 
+using Turtle;
+
 /// <summary>
 /// Represents a SVG drawable line.
 /// </summary>
@@ -31,7 +33,7 @@ public class Line : IDrawable
     public override string ToString()
     {
         var style = $"stroke:{_colour}; stroke-width:{_width}";
-        return $@"<line x1=""{_pt1.X}"" y1=""{_pt1.Y}"" x2=""{_pt2.X}"" y2=""{_pt2.Y}"" style=""{style}""/>";
+        return $"""<line x1="{_pt1.X}" y1="{_pt1.Y}" x2="{_pt2.X}" y2="{_pt2.Y}" style="{style}"/>""";
     }
 
     /// <summary>

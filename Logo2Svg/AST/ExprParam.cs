@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using Logo2Svg.Language;
+using Logo2Svg.Turtle;
 
 namespace Logo2Svg.AST;
 
@@ -33,12 +34,12 @@ public class ExprParam : Parameter
     /// <summary>
     /// Evaluates the expression, returning its evaluated value (a float).
     /// </summary>
-    /// <param name="turtle">The turtle information.</param>
+    /// <param name="turtleState">The turtle information.</param>
     /// <returns>The result of evaluating the expression.</returns>
     /// <exception cref="DivideByZeroException">Thrown on division by zero.</exception>
-    public override float Value(Turtle turtle)
+    public override float Value(TurtleState turtleState)
     {
-        var values = _parameters.Select(p => p.Value(turtle)).ToArray();
+        var values = _parameters.Select(p => p.Value(turtleState)).ToArray();
         return Op switch
         {
             LogoLexer.True => true.AsFloat(),
@@ -71,14 +72,14 @@ public class ExprParam : Parameter
             LogoLexer.Sin => MathF.Sin(values[0]),
             LogoLexer.Cos => MathF.Cos(values[0]),
             LogoLexer.Tan => MathF.Tan(values[0]),
-            LogoLexer.Radsin => MathF.Sin(values[0] * Turtle.ToRadians),
-            LogoLexer.Radcos => MathF.Cos(values[0] * Turtle.ToRadians),
-            LogoLexer.Radtan => MathF.Tan(values[0] * Turtle.ToRadians),
+            LogoLexer.Radsin => MathF.Sin(values[0] * TurtleState.ToRadians),
+            LogoLexer.Radcos => MathF.Cos(values[0] * TurtleState.ToRadians),
+            LogoLexer.Radtan => MathF.Tan(values[0] * TurtleState.ToRadians),
             LogoLexer.Arctan => values.Length == 2 ? 
                 MathF.Atan2(values[0], values[1]) : MathF.Atan(values[0]),
             LogoLexer.Radarctan => values.Length == 2 ? 
-                MathF.Atan2(values[0] * Turtle.ToRadians, values[1] * Turtle.ToRadians) :
-                MathF.Atan(values[0] * Turtle.ToRadians),
+                MathF.Atan2(values[0] * TurtleState.ToRadians, values[1] * TurtleState.ToRadians) :
+                MathF.Atan(values[0] * TurtleState.ToRadians),
             _ => 0
         };
     }

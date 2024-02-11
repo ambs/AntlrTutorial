@@ -1,5 +1,7 @@
 namespace Logo2Svg.SVG;
 
+using Turtle;
+
 /// <summary>
 /// The drawable canvas. Consists of a list of drawable elements.
 /// Supports all the <c>List</c> methods.
@@ -27,6 +29,6 @@ public class Canvas : List<IDrawable>
         ForEach(item => item.Displace(displacement));
         max += displacement + new Point(1, 1);
         var lines = string.Join("\n", this);
-        return $@"<svg width=""{(int)max.X}"" height=""{(int)max.Y}"">{lines}</svg>";
+        return $"""<svg width="{(int)max.X}" height="{(int)max.Y}">{lines}</svg>""";
     }
 }

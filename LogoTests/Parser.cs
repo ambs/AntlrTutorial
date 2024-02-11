@@ -1,4 +1,3 @@
-using Antlr4.Runtime;
 using Logo2Svg.AST;
 using Logo2Svg.Language;
 

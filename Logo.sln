@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildAntlr", "BuildAntlr\BuildAntlr.csproj", "{604A571F-5899-4EF3-A726-85D2DBB2C43A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logo2Svg", "Logo2Svg\Logo2Svg.csproj", "{3980F08B-E758-4212-949E-9671D9DF86BA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogoTests", "LogoTests\LogoTests.csproj", "{02FEFC55-816C-4DBD-9782-5ECF54CD4C8E}"
@@ -18,10 +16,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{604A571F-5899-4EF3-A726-85D2DBB2C43A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{604A571F-5899-4EF3-A726-85D2DBB2C43A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{604A571F-5899-4EF3-A726-85D2DBB2C43A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{604A571F-5899-4EF3-A726-85D2DBB2C43A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3980F08B-E758-4212-949E-9671D9DF86BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3980F08B-E758-4212-949E-9671D9DF86BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3980F08B-E758-4212-949E-9671D9DF86BA}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -111,9 +111,12 @@ public class ExpressionsParser
     }
 
     [TestMethod]
-    public void DivisionByZero()
+    [DataRow("10/0")]
+    [DataRow("10/0.0")]
+    [DataRow("quotient 10 0")]
+    public void DivisionByZero(string expression)
     {
-        Assert.ThrowsException<DivideByZeroException>(() => "10/0".ToParameter().Value(null));
+        Assert.ThrowsException<DivideByZeroException>(() => expression.ToParameter().Value(null));
     }
     
     [TestMethod]

@@ -1,6 +1,6 @@
 using Logo2Svg.Turtle;
 
-namespace Logo2Svg.AST;
+namespace Logo2Svg.AST.Nodes;
 
 /// <summary>
 /// A parameter representing a variable name.

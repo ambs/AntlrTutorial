@@ -2,7 +2,7 @@ using Logo2Svg.Language;
 using Logo2Svg.SVG;
 using Logo2Svg.Turtle;
 
-namespace Logo2Svg.AST;
+namespace Logo2Svg.AST.Nodes;
 
 /// <summary>
 /// AST Node representing a command.
@@ -89,7 +89,7 @@ public class Command : INode
             {
                 var pos = (int) Parameter(0).Value(turtleState);
                 if (pos is < 0 or > 15) throw new IndexOutOfRangeException();
-                Colour.Palette[pos] = Parameter<ColourNode>(1).Colour(turtleState);
+                ColourPalette.Palette[pos] = Parameter<ColourNode>(1).Colour(turtleState);
                 break;
             }
             case LogoLexer.PenDown:

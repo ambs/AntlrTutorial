@@ -2,12 +2,12 @@ using System.Collections.ObjectModel;
 using Logo2Svg.Language;
 using Logo2Svg.Turtle;
 
-namespace Logo2Svg.AST;
+namespace Logo2Svg.AST.Nodes;
 
 /// <summary>
 /// Represents an expression node in the AST.
 /// </summary>
-public class ExprParam : Parameter
+public class Expression : Parameter
 {
     /// <summary>
     /// The operator ID (borrowed from the LogoLexer token ID).
@@ -25,7 +25,7 @@ public class ExprParam : Parameter
     /// </summary>
     /// <param name="op">The ID of the operator.</param>
     /// <param name="parameters">The list of operands.</param>
-    public ExprParam(int op, params Parameter[] parameters)
+    public Expression(int op, params Parameter[] parameters)
     {
         Op = op;
         _parameters = new List<Parameter>(parameters);

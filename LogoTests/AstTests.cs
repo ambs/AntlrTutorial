@@ -1,4 +1,5 @@
 using Logo2Svg.AST;
+using Logo2Svg.AST.Nodes;
 using Logo2Svg.Language;
 
 namespace LogoTests;
@@ -48,7 +49,7 @@ public class AstTests
         }
         Assert.AreEqual(10f, tree[0].Parameter<ValueParam>(1).FloatValue);
         Assert.AreEqual(20f, tree[1].Parameter<ValueParam>(1).FloatValue);
-        var sum = tree[2].Parameter<ExprParam>(1);
+        var sum = tree[2].Parameter<Expression>(1);
         Assert.IsNotNull(sum);
         Assert.AreEqual(LogoLexer.Sum, sum.Op);
         for (var i = 0; i < 2; i++)
@@ -69,7 +70,7 @@ public class AstTests
         Assert.IsNotNull(cmd);
         Assert.AreEqual(LogoLexer.IfElse, cmd.Id);
         Assert.AreEqual(3, cmd.Params.Count);
-        var cmp = cmd.Parameter<ExprParam>(0);
+        var cmp = cmd.Parameter<Expression>(0);
         Assert.IsNotNull(cmd);
         Assert.AreEqual(LogoLexer.Less, cmp.Op);
         var trueBranch = cmd.Parameter<CommandBlock>(1);

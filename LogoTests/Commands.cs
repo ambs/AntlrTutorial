@@ -12,8 +12,9 @@ public class Commands
     [DataRow(3, @"""#FF0000")]
     public void Commands_SetPalette(int pos, string color)
     {
+        TestUtils.ClearColourPalette();
         $"SetPalette {pos} {color}".Execute();
-        var colour = Colour.Palette[pos];
+        var colour = ColourPalette.Palette[pos];
         Assert.IsNotNull(colour);
         colour.AssertColour(255, 0, 0);
     }

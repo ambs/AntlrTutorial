@@ -1,4 +1,4 @@
-namespace Logo2Svg.AST;
+namespace Logo2Svg.AST.Nodes;
 
 /// <summary>
 /// Represents the top level of the LOGO AST.

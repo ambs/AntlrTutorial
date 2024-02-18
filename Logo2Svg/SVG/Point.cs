@@ -1,4 +1,4 @@
-namespace Logo2Svg.Turtle;
+namespace Logo2Svg.SVG;
 
 /// <summary>
 /// Abstraction of a point in a 2D coordinate system.

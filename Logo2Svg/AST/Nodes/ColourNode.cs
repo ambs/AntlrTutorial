@@ -1,8 +1,9 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
+using Logo2Svg.SVG;
 using Logo2Svg.Turtle;
 
-namespace Logo2Svg.AST;
+namespace Logo2Svg.AST.Nodes;
 
 public class ColourNode : INode
 {
@@ -16,7 +17,7 @@ public class ColourNode : INode
         {
             if (!Regex.IsMatch(possibleName, "^#[0-9A-Fa-f]{6}$"))
                 throw new Exception("Invalid CSS colour");
-            
+
             var red = int.Parse(possibleName.Substring(1, 2), NumberStyles.HexNumber);
             var green = int.Parse(possibleName.Substring(3, 2), NumberStyles.HexNumber);
             var blue = int.Parse(possibleName.Substring(5, 2), NumberStyles.HexNumber);
@@ -24,7 +25,7 @@ public class ColourNode : INode
         }
         else
         {
-            if (!Turtle.Colour.ColourNames.TryGetValue(possibleName.ToLowerInvariant(), out _cssColour))
+            if (!ColourPalette.ColourNames.TryGetValue(possibleName.ToLowerInvariant(), out _cssColour))
                 throw new Exception("Invalid CSS colour name");
         }
     }
@@ -44,7 +45,7 @@ public class ColourNode : INode
         {
             var i = (int) _id.Value(turtleState);
             if (i is < 0 or > 15) throw new IndexOutOfRangeException($"Invalid palette index: {i}");
-            return Turtle.Colour.Palette[i];
+            return ColourPalette.Palette[i];
         }
 
         if (_redExpr is not null)

@@ -1,6 +1,6 @@
 using Logo2Svg.Turtle;
 
-namespace Logo2Svg.AST;
+namespace Logo2Svg.AST.Nodes;
 
 public class Method : Parameter
 {
@@ -33,10 +33,7 @@ public class Method : Parameter
         {
             Code.Execute(turtleState);
         }
-        catch (LogoStopException)
-        {
-            // recover
-        }
+        catch (LogoStopException) { /* recover */ }
         finally
         {
             turtleState.ExitScope();

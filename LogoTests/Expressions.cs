@@ -1,4 +1,5 @@
 using Logo2Svg.AST;
+using Logo2Svg.AST.Nodes;
 using Logo2Svg.Language;
 
 namespace LogoTests;
@@ -20,7 +21,7 @@ public class Expressions
     {
         const float a = 10.4f, b = 30.2f;
         ValueParam pA = new(a), pB = new(b);
-        Parameter sum = new ExprParam(LogoLexer.Sum, pA, pB);
+        Parameter sum = new Expression(LogoLexer.Sum, pA, pB);
         
         Assert.AreEqual(a + b, sum.Value(null), "Sum correctly computed");
     }
@@ -31,7 +32,7 @@ public class Expressions
         var r = new Random(666);
         var values = Enumerable.Range(0, 10).Select(_ => r.NextSingle()).ToArray();
         var parameters = values.Select<float, Parameter>(v => new ValueParam(v)).ToArray();
-        Parameter sumExpr = new ExprParam(LogoLexer.Sum, parameters);
+        Parameter sumExpr = new Expression(LogoLexer.Sum, parameters);
         var sumValue = values.Aggregate(0f, (a, b) => a + b);
 
         Assert.AreEqual(sumValue, sumExpr.Value(null), "Sum correctly computed");

@@ -1,6 +1,8 @@
 using Antlr4.Runtime;
 using Logo2Svg.AST;
+using Logo2Svg.AST.Nodes;
 using Logo2Svg.Language;
+using Logo2Svg.SVG;
 using Logo2Svg.Turtle;
 
 namespace LogoTests;
@@ -40,8 +42,16 @@ public static class TestUtils
 
     public static void AssertColour(this Colour colour, int red, int green, int blue)
     {
-        Assert.AreEqual(colour.Red, red);
-        Assert.AreEqual(colour.Green, green);
-        Assert.AreEqual(colour.Blue, blue);
+        Assert.AreEqual(red, colour.Red);
+        Assert.AreEqual(green, colour.Green);
+        Assert.AreEqual(blue, colour.Blue);
+    }
+
+    public static void ClearColourPalette()
+    {
+        for (var i = 0; i < 16; ++i)
+        {
+            ColourPalette.Palette[i] = new Colour(0, 0, 0);
+        }
     }
 }

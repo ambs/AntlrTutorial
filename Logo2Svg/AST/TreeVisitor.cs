@@ -1,6 +1,7 @@
 using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
+using Logo2Svg.AST.Nodes;
 using Logo2Svg.Language;
 using Logo2Svg.SVG;
 
@@ -42,8 +43,8 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
     /// <returns>Parameter (ExprParam or ValueParam) representing the value.</returns>
     public override INode VisitValue(LogoParser.ValueContext context)
     {
-        if (context.True() is not null) return new ExprParam(LogoLexer.True);
-        if (context.False() is not null) return new ExprParam(LogoLexer.False);
+        if (context.True() is not null) return new Expression(LogoLexer.True);
+        if (context.False() is not null) return new Expression(LogoLexer.False);
 
         var valueStr = (context.IntegerValue() ?? context.RealValue()).Symbol.Text;
         return new ValueParam(float.Parse(valueStr));
@@ -100,7 +101,7 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
             LogoLexer.GreaterEqualSign => LogoLexer.GreaterEqual,
             _ => context.op.Type
         };
-        return new ExprParam(op, parcels.ToArray());
+        return new Expression(op, parcels.ToArray());
     }
 
     /// <summary>
@@ -109,7 +110,7 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
     /// <param name="context">Production context.</param>
     /// <returns>ExprParam representing the operation.</returns>
     public override INode VisitUnaryMinus(LogoParser.UnaryMinusContext context)
-        => new ExprParam(LogoLexer.Minus, Visit<Parameter>(context.expr()));
+        => new Expression(LogoLexer.Minus, Visit<Parameter>(context.expr()));
     
     /// <summary>
     /// Visitor for the <c>AtomicCmd</c> production.
@@ -181,7 +182,7 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
     /// <param name="context">Production context.</param>
     /// <returns>Expression parameter for boolean expressions.</returns>
     public override INode VisitBoolean(LogoParser.BooleanContext context)
-        => new ExprParam(context.cmd.Type, context.expr().Select(Visit<Parameter>).ToArray());
+        => new Expression(context.cmd.Type, context.expr().Select(Visit<Parameter>).ToArray());
 
     /// <summary>
     /// Visitor for the <c>Summation</c> production.
@@ -189,7 +190,7 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
     /// <param name="context">Production context.</param>
     /// <returns>Expression parameter for summation expression.</returns>
     public override INode VisitSummation(LogoParser.SummationContext context)
-        => new ExprParam(context.Sum().Symbol.Type, context.expr().Select(Visit<Parameter>).ToArray());
+        => new Expression(context.Sum().Symbol.Type, context.expr().Select(Visit<Parameter>).ToArray());
     
     /// <summary>
     /// Visitor for the <c>Product</c> production.
@@ -197,7 +198,7 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
     /// <param name="context">Production context.</param>
     /// <returns>Expression parameter for product expression.</returns>
     public override INode VisitProduct(LogoParser.ProductContext context)
-        => new ExprParam(context.Product().Symbol.Type, context.expr().Select(Visit<Parameter>).ToArray());
+        => new Expression(context.Product().Symbol.Type, context.expr().Select(Visit<Parameter>).ToArray());
 
     /// <summary>
     /// Visitor for the <c>Quotient</c> production.
@@ -205,7 +206,7 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
     /// <param name="context">Production context.</param>
     /// <returns>Expression parameter for quotient expression.</returns>
     public override INode VisitQuotient(LogoParser.QuotientContext context)
-        => new ExprParam(context.Quotient().Symbol.Type, Visit<Parameter>(context.expr()));
+        => new Expression(context.Quotient().Symbol.Type, Visit<Parameter>(context.expr()));
 
     /// <summary>
     /// Visitor for the <c>PrefixBinaryOp</c> production.
@@ -213,7 +214,7 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
     /// <param name="context">Production context.</param>
     /// <returns>Expression parameter for the Polish Notation expressions.</returns>
     public override INode VisitPrefixBinaryOp(LogoParser.PrefixBinaryOpContext context)
-        => new ExprParam(context.cmd.Type, context.expr().Select(Visit<Parameter>).ToArray());
+        => new Expression(context.cmd.Type, context.expr().Select(Visit<Parameter>).ToArray());
 
     /// <summary>
     /// Visitor for the <c>ArithFuncs</c> production.
@@ -221,7 +222,7 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
     /// <param name="context">Production context.</param>
     /// <returns>Expression parameter for the arithmetic function expressions.</returns>
     public override INode VisitArithFuncs(LogoParser.ArithFuncsContext context)
-        => new ExprParam(context.fun.Type, context.expr().Select(Visit<Parameter>).ToArray());
+        => new Expression(context.fun.Type, context.expr().Select(Visit<Parameter>).ToArray());
 
     /// <summary>
     /// Visitor for the <c>SetVariable</c> production.
@@ -289,7 +290,7 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
     {
         INode colour = context.colourList() is { } colourListContext
             ? Visit<ColourNode>(colourListContext)
-            : new ColourNode(new VarName(context.Variable().GetText()));
+            : new ColourNode(context.Variable().GetText());
         return new Command(LogoLexer.SetPalette, "setPalette",
             Visit<Parameter>(context.expr()), colour);
     }
@@ -302,7 +303,7 @@ public class TreeVisitor : LogoParserBaseVisitor<INode>
     public override INode VisitSetPenColor(LogoParser.SetPenColorContext context)
     {
         INode colour = context.expr() is { } exprContext ? 
-            new ColourNode(Visit<ExprParam>(exprContext)) :
+            new ColourNode(Visit<Expression>(exprContext)) :
             context.colourList() is { } colourListContext ? 
                 Visit<ColourNode>(colourListContext) :
                 new ColourNode(new VarName(context.Variable().GetText()));
